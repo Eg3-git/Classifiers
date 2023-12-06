@@ -36,43 +36,15 @@ dir3b = "3USER_10TASKS/robot-endeffector/ABC1/U3_ABC-pos3.mat"
 intervals = [100]
 
 for t in intervals:
-    Xs = extract(dir1a, dir1b, t)
-    Ys = extract(dir2a, dir2b, t)
-    Zs = extract(dir3a, dir3b, t)
-    train_data = []
-    train_classes = []
-    test_data = []
-    test_classes = []
+    X_train, X_test = extract(dir1a, dir1b, t)
+    Y_train, Y_test = extract(dir2a, dir2b, t)
+    Z_train, Z_test = extract(dir3a, dir3b, t)
+    train_data = X_train + Y_train + Z_train
+    train_classes = [1 for _ in X_train] + [2 for _ in Y_train] + [3 for _ in Z_train]
+    test_data = X_test + Y_test + Z_test
+    test_classes = [1 for _ in X_test] + [2 for _ in Y_test] + [3 for _ in Z_test]
 
-    for d1 in Xs[:-3]:
-        for d2 in d1:
-            train_data.append(d2)
-            train_classes.append(1)
 
-    for d1 in Ys[:-3]:
-        for d2 in d1:
-            train_data.append(d2)
-            train_classes.append(2)
-
-    for d1 in Zs[:-3]:
-        for d2 in d1:
-            train_data.append(d2)
-            train_classes.append(3)
-
-    for d1 in Xs[-3:]:
-        for d2 in d1:
-            test_data.append(d2)
-            test_classes.append(1)
-
-    for d1 in Ys[-3:]:
-        for d2 in d1:
-            test_data.append(d2)
-            test_classes.append(2)
-
-    for d1 in Zs[-3:]:
-        for d2 in d1:
-            test_data.append(d2)
-            test_classes.append(3)
 
     # data_train, data_test, classes_train, classes_test = train_test_split(data, classes, test_size=0.25, shuffle=True)
 

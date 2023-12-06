@@ -18,7 +18,7 @@ dir1a = "3USER_10TASKS/index/ABC1/U1_abc.csv"
 dir1b = "3USER_10TASKS/robot-endeffector/ABC1/U1_ABC-pos3.mat"
 
 
-def extract(dir1, dir2, interval=100):
+def extract(dir1, dir2, flatten=True, interval=100):
     with open(dir1, newline='') as f:
         X = []
         indices = csv.reader(f)
@@ -55,7 +55,10 @@ def extract(dir1, dir2, interval=100):
                 b += interval
 
             X.append(Y)
-
+        if flatten:
+            train = [d2 for d1 in X[:-3] for d2 in d1]
+            test = [d2 for d1 in X[-3:] for d2 in d1]
+            return train, test
         return X
 
 

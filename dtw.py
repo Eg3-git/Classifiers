@@ -25,41 +25,19 @@ dir2b = "3USER_10TASKS/robot-endeffector/ABC1/U2_ABC-pos3.mat"
 dir3a = "3USER_10TASKS/index/ABC1/U3_abc.csv"
 dir3b = "3USER_10TASKS/robot-endeffector/ABC1/U3_ABC-pos3.mat"
 
-def distance(x, y):
-    distances = np.zeros((len(x), len(y)))
-    for i in range(len(y)):
-        for j in range(len(x)):
-            distances[i, j] = (x[j]-y[i])**2
-    return distances
 
-def calc_cost(x, y):
-    distances = distance(x, y)
-
-    cost = np.zeros(len(x), len(y))
-    cost[0, 0] = distances[0, 0]
-
-    for i in range(1, len(y)):
-        cost[i, 0] = distances[i, 0] + cost[i-1, 0]
-
-    for j in range(1, len(x)):
-        cost[0, j] = distances[0, j] + cost[0, j-1]
-
-    for i in range(1, len(y)):
-        for j in range(1, len(x)):
-            cost[i, j] = min(cost[i-1, j], cost[i, j-1], cost[i-1, j-1]) + distances[i, j]
-
-    return cost
-
-def dtw(train, test):
+def dtw(train, test, weights=[1 for _ in range(17)]):
     sum_n = []
     for n in train:
         sum_k = 0
         for k in range(17):
+            feature_weight = weights[k]
             train_seq = [o[k] for o in n]
             test_seq = [o[k] for o in test]
 
+
             dtw_distance, warp_path = fastdtw(test_seq, train_seq, dist=2)
-            sum_k += dtw_distance
+            sum_k += (dtw_distance * feature_weight)
         sum_n.append(sum_k)
 
     tot = 0
@@ -67,9 +45,31 @@ def dtw(train, test):
         tot+=s
     return tot/len(sum_n)
 
-U1 = extract(dir1a, dir1b)
-U2 = extract(dir2a, dir2b)
-U3 = extract(dir3a, dir3b)
+def train_weights(w, weights, u, test, train1, train2, train3):
+    m = -1
+    mis = 0
+
+    weights[w] = 0
+    r1_1 = dtw(train1, test, weights)
+    r2_1 = dtw(train2, test, weights)
+    r3_1 = dtw(train3, test, weights)
+
+    weights[w] = 1
+    r1_2 = dtw(train1, test, weights)
+    r2_2 = dtw(train2, test, weights)
+    r3_2 = dtw(train3, test, weights)
+
+    print("Feature", w)
+    print("Test User", u)
+    print("U1, w0: {n1}, w1: {n2}, Dif: {d}".format(n1=r1_1, n2=r1_2, d=r1_2-r1_1))
+    print("U2, w0: {n1}, w1: {n2}, Dif: {d}".format(n1=r2_1, n2=r2_2, d=r2_2-r2_1))
+    print("U3, w0: {n1}, w1: {n2}, Dif: {d}".format(n1=r3_1, n2=r3_2, d=r3_2-r3_1))
+    print()
+
+
+U1 = extract(dir1a, dir1b, flatten=False)
+U2 = extract(dir2a, dir2b, flatten=False)
+U3 = extract(dir3a, dir3b, flatten=False)
 
 U1_train = U1[:-1]
 U1_test = U1[-1]
@@ -80,8 +80,14 @@ U2_test = U2[-1]
 U3_train = U3[:-1]
 U3_test = U3[-1]
 
-print("User 1:", dtw(U1_train, U3_test))
-print("User 2:", dtw(U2_train, U3_test))
-print("User 3:", dtw(U3_train, U3_test))
+#print("User 1:", dtw(U1_train, U1_test))
+#print("User 2:", dtw(U2_train, U1_test))
+#print("User 3:", dtw(U3_train, U1_test))
+ws = [1 for _ in range(17)]
+w = 5
+
+train_weights(w, ws, 1, U1_test, U1_train, U2_train, U3_train)
+train_weights(w, ws, 2, U2_test, U1_train, U2_train, U3_train)
+train_weights(w, ws, 3, U3_test, U1_train, U2_train, U3_train)
 
 
