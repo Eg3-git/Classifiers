@@ -48,6 +48,7 @@ def dtw(train, test, weights=[1 for _ in range(17)]):
 def train_weights(w, weights, u, test, train1, train2, train3):
     m = -1
     mis = 0
+    print("Feature", w, "Test User", u)
 
     weights[w] = 0
     r1_1 = dtw(train1, test, weights)
@@ -59,12 +60,22 @@ def train_weights(w, weights, u, test, train1, train2, train3):
     r2_2 = dtw(train2, test, weights)
     r3_2 = dtw(train3, test, weights)
 
-    print("Feature", w)
-    print("Test User", u)
-    print("U1, w0: {n1}, w1: {n2}, Dif: {d}".format(n1=r1_1, n2=r1_2, d=r1_2-r1_1))
-    print("U2, w0: {n1}, w1: {n2}, Dif: {d}".format(n1=r2_1, n2=r2_2, d=r2_2-r2_1))
-    print("U3, w0: {n1}, w1: {n2}, Dif: {d}".format(n1=r3_1, n2=r3_2, d=r3_2-r3_1))
-    print()
+    dif1 = r1_2 - r1_1
+    dif2 = r2_2 - r2_1
+    dif3 = r3_2 - r3_1
+
+    if u == 1:
+        return min(dif2, dif3)/dif1
+    elif u == 2:
+        return min(dif1, dif3) / dif2
+    else:
+        return min(dif1, dif2) / dif3
+
+
+    #print("U1, w0: {n1}, w1: {n2}, Dif: {d}".format(n1=r1_1, n2=r1_2, d=r1_2-r1_1))
+    #print("U2, w0: {n1}, w1: {n2}, Dif: {d}".format(n1=r2_1, n2=r2_2, d=r2_2-r2_1))
+    #print("U3, w0: {n1}, w1: {n2}, Dif: {d}".format(n1=r3_1, n2=r3_2, d=r3_2-r3_1))
+    #print()
 
 
 U1 = extract(dir1a, dir1b, flatten=False)
@@ -80,14 +91,21 @@ U2_test = U2[-1]
 U3_train = U3[:-1]
 U3_test = U3[-1]
 
-#print("User 1:", dtw(U1_train, U1_test))
-#print("User 2:", dtw(U2_train, U1_test))
-#print("User 3:", dtw(U3_train, U1_test))
-ws = [1 for _ in range(17)]
-w = 5
+ws = [0.09, 0.08, 0.06, 0.06, 0.04, 0.06, 0.05, 0.05, 0.07, 0.06, 0.07, 0.05, 0.06, 0.05, 0.06, 0.05, 0.04]
 
-train_weights(w, ws, 1, U1_test, U1_train, U2_train, U3_train)
-train_weights(w, ws, 2, U2_test, U1_train, U2_train, U3_train)
-train_weights(w, ws, 3, U3_test, U1_train, U2_train, U3_train)
+print("User 1:", dtw(U1_train, U3_test, ws))
+print("User 2:", dtw(U2_train, U3_test, ws))
+print("User 3:", dtw(U3_train, U3_test, ws))
 
+#indices = range(17)
+#avr_dif = []
+#for w in indices:
 
+ #   ratio1 = train_weights(w, ws, 1, U1_test, U1_train, U2_train, U3_train)
+  #  ratio2 = train_weights(w, ws, 2, U2_test, U1_train, U2_train, U3_train)
+   # ratio3 = train_weights(w, ws, 3, U3_test, U1_train, U2_train, U3_train)
+
+    #avr_dif.append((ratio1+ratio2+ratio3)/3)
+    #print((ratio1+ratio2+ratio3)/3)
+
+#print(avr_dif)
