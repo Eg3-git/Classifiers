@@ -9,6 +9,8 @@ intervals = [100]
 def train(users, tasks):
     test_data = []
     test_classes = []
+    task_classes = []
+    t = 0
     for task in tasks:
         root_index = "ROBOT_USER_DATA/index/{t}/".format(t=task)
         root_endef = "ROBOT_USER_DATA/robot-endeffector/{t}/".format(t=task)
@@ -29,28 +31,33 @@ def train(users, tasks):
         train_classes = [0 for _ in X_train] + [1 for _ in Y_train] + [1 for _ in Z_train]
         test_data += (X_test + Y_test + Z_test)
         test_classes += ([0 for _ in X_test] + [1 for _ in Y_test] + [1 for _ in Z_test])
+        task_classes += ([t for _ in X_test + Y_test + Z_test])
+        t += 1
 
         print("training", task)
         model = RandomForestClassifier()
         model.fit(train_data, train_classes)
 
         dump(model, "models/rf/{t}/rf_U1_{t}.joblib".format(t=task))
-    return test_data, test_classes
+    return test_data, test_classes, task_classes
 
 
-def test(user, test_data, test_classes, tasks):
+def test(user, test_data, test_classes, task_classes):
     task_model = load("task_model_rf.joblib")
-    predictions = []
+    user_predictions = []
+    task_predictions = []
 
     for datum in test_data:
-        predicted_task = task_model.predict([datum])
-        user_model = load("models/rf/{t}/rf_{u}_{t}.joblib".format(u=user, t=tasks[predicted_task[0]]))
-        predictions.append(user_model.predict([datum]))
+        predicted_task = task_model.predict([datum])[0]
+        task_predictions.append(predicted_task)
+        user_model = load("models/rf/{t}/rf_{u}_{t}.joblib".format(u=user, t=tasks[predicted_task]))
+        user_predictions.append(user_model.predict([datum]))
 
-    print(accuracy_score(predictions, test_classes))
+    print("Users correctly classified:", accuracy_score(user_predictions, test_classes))
+    print("Tasks correctly classified:", accuracy_score(task_predictions, task_classes))
 
 
 tasks = ["abc", "circle", "o", "p2p2", "push", "s", "star", "tri", "w", "z"]
 
-data, classes = train([], tasks)
-test("U1", data, classes, tasks)
+data, classes, task_classes = train([], tasks)
+test("U1", data, classes, task_classes)
