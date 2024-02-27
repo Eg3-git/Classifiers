@@ -2,6 +2,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 from feature_extraction import extract
 from joblib import dump, load
+import time
 
 intervals = [100]
 
@@ -11,6 +12,7 @@ def train(users, tasks):
     test_classes = []
     task_classes = []
     t = 0
+    tot_time = 0
     for task in tasks:
         root_index = "ROBOT_USER_DATA/index/{t}/".format(t=task)
         root_endef = "ROBOT_USER_DATA/robot-endeffector/{t}/".format(t=task)
@@ -36,25 +38,35 @@ def train(users, tasks):
 
         print("training", task)
         model = RandomForestClassifier()
+        t1 = time.time()
         model.fit(train_data, train_classes)
+        t2 = time.time()
 
+        tot_time += (t2 - t1)
         dump(model, "models/rf/{t}/rf_U1_{t}.joblib".format(t=task))
+    print("Avr train time:", tot_time / len(train_data))
     return test_data, test_classes, task_classes
 
 
 def test(user, test_data, test_classes, task_classes):
-    task_model = load("task_model_rf.joblib")
+    task_model = load("../task_model_rf.joblib")
     user_predictions = []
     task_predictions = []
+    tot_time = 0
 
     for datum in test_data:
+        t1 = time.time()
         predicted_task = task_model.predict([datum])[0]
         task_predictions.append(predicted_task)
         user_model = load("models/rf/{t}/rf_{u}_{t}.joblib".format(u=user, t=tasks[predicted_task]))
         user_predictions.append(user_model.predict([datum]))
+        t2 = time.time()
+        tot_time += (t2 - t1)
 
+    print("Testing points:", len(test_data))
     print("Users correctly classified:", accuracy_score(user_predictions, test_classes))
     print("Tasks correctly classified:", accuracy_score(task_predictions, task_classes))
+    print("Avr prediction time:", tot_time / len(test_data))
 
 
 tasks = ["abc", "circle", "o", "p2p2", "push", "s", "star", "tri", "w", "z"]

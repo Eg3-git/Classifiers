@@ -1,5 +1,5 @@
 from feature_extraction import extract
-from sklearn.ensemble import RandomForestClassifier
+from sklearn import svm
 from sklearn.metrics import accuracy_score
 import time
 from joblib import dump
@@ -25,15 +25,14 @@ for task in tasks:
         test_classes.extend([classes[task]] * len(test))
 
 print("started", len(train_data))
-model = RandomForestClassifier()
+model = svm.SVC(kernel="linear")
 print("training")
-model.fit(train_data, train_classes)
-print("Accuracy")
 t1 = time.time()
-predictions = model.predict(test_data)
+model.fit(train_data, train_classes)
 t2 = time.time()
-print(accuracy_score(predictions, test_classes))
-print("Avr Time:", (t2 - t1) / len(test_classes))
+
+print("Training points", len(train_data))
+print("Time to train:", (t2 - t1))
 print("saving")
-dump(model, "task_model_rf.joblib")
+dump(model, "../task_model_svm.joblib")
 print("done")
