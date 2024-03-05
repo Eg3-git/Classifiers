@@ -3,7 +3,7 @@ import csv
 from scipy.io import loadmat
 
 import numpy as np
-
+import os.path
 import math
 
 
@@ -27,7 +27,7 @@ def extract(user, task, haptics_or_ur3e=0, flatten=True, interval=100):
             prev_accel = [0, 0, 0]
 
             for i in range(1+interval, len(data), interval):
-                prev_pos = [float(x) for x in data[i-interval]]
+                prev_pos = [float(x) for x in data[i-interval][1:4]]
                 pos = [float(x) for x in data[i][1:4]]
 
                 s = [pos[0] - prev_pos[0], pos[1] - prev_pos[1], pos[2] - prev_pos[2]]
