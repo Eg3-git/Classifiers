@@ -7,7 +7,9 @@ import os.path
 import math
 
 
-def extract(user, task, haptics_or_ur3e=0, flatten=True, interval=100):
+def extract(user, task, haptics_or_ur3e=0, show_maxmin=False, interval=100):
+    maxs = [None for _ in range(17)]
+    mins = [None for _ in range(17)]
     base_dir = "Data Collection/{u}/{u}{t}".format(u=user, t=task)
     features = []
 
@@ -49,9 +51,21 @@ def extract(user, task, haptics_or_ur3e=0, flatten=True, interval=100):
                 prev_vel = velocity
                 prev_accel = accel
 
+                if show_maxmin:
+                    for feature in range(17):
+                        if maxs[feature] is None or to_append[feature] > maxs[feature]:
+                            maxs[feature] = to_append[feature]
+                        if mins[feature] is None or to_append[feature] < maxs[feature]:
+                            mins[feature] = to_append[feature]
+
+
     l = len(features)
     train = features[:int(l*0.75)]
     test = features[int(l*0.75):]
+
+    if show_maxmin:
+        print(maxs)
+        print(mins)
 
     return train, test
 
