@@ -61,19 +61,31 @@ def test(user, method, test_data, test_classes, task_classes, haptics_or_ur3e=0)
     user_predictions = []
     task_predictions = []
     tot_time = 0
+    cur_breaches = 0
+    max_consec_breaches = 0
 
-    for datum in test_data:
+    for i in range(len(test_data)):
         t1 = time.time()
-        predicted_task = task_model.predict([datum])[0]
+        predicted_task = task_model.predict([test_data[i]])[0]
         task_predictions.append(predicted_task)
         user_model = load("models/{m}/{t}/{m}_{u}_{t}_{h}.joblib".format(m=method, t=tasks[predicted_task], u=user, h=name))
-        user_predictions.append(user_model.predict([datum]))
+        current_prediction = user_model.predict([test_data[i]])[0]
+
+        if test_classes[i] == 0 and current_prediction != 0:
+            cur_breaches += 1
+            if cur_breaches > max_consec_breaches:
+                max_consec_breaches = cur_breaches
+        else:
+            cur_breaches = 0
+
+        user_predictions.append(current_prediction)
         t2 = time.time()
         tot_time += (t2 - t1)
 
     print("Testing points:", len(test_data))
     print("Users correctly classified:", accuracy_score(user_predictions, test_classes))
     print("Tasks correctly classified:", accuracy_score(task_predictions, task_classes))
+    print("Maximum number of false breaches:", max_consec_breaches)
     print("Avr prediction time:", tot_time / len(test_data))
 
 
