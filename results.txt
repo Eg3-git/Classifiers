@@ -1,0 +1,84 @@
+HAPTICS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+svm
+Task Model Train Time: 0.21090102195739746
+User Models Average Train Time: 2.5781173495776308e-05
+User Prediction Accuracy: 0.8745136186770428
+Task Prediction Accuracy: 0.2308690012970169
+Average Prediction Time: 0.0008757456499314958
+Max Number of Consecutive False Breaches: 32
+Max Number of Consecutive Missed Breaches: 1
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+rf
+Task Model Train Time: 0.7925589084625244
+User Models Average Train Time: 0.0009006398661127351
+User Prediction Accuracy: 0.9019130998702984
+Task Prediction Accuracy: 0.5927367055771725
+Average Prediction Time: 0.023611020871792014
+Max Number of Consecutive False Breaches: 19
+Max Number of Consecutive Missed Breaches: 2
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+knn
+Task Model Train Time: 0.002359151840209961
+User Models Average Train Time: 5.1128957058205214e-06
+User Prediction Accuracy: 0.8513294422827495
+Task Prediction Accuracy: 0.34370946822308696
+Average Prediction Time: 0.002745034320499801
+Max Number of Consecutive False Breaches: 25
+Max Number of Consecutive Missed Breaches: 4
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+dt
+Task Model Train Time: 0.044157981872558594
+User Models Average Train Time: 3.346159145835154e-05
+User Prediction Accuracy: 0.8381971465629052
+Task Prediction Accuracy: 0.43320363164721154
+Average Prediction Time: 0.0005483166562289425
+Max Number of Consecutive False Breaches: 23
+Max Number of Consecutive Missed Breaches: 4
+
+=======================================================
+UR3E
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+svm
+Task Model Train Time: 4.210848093032837
+User Models Average Train Time: 4.507917819058367e-05
+User Prediction Accuracy: 0.8748845443349753
+Task Prediction Accuracy: 0.2364532019704433
+Average Prediction Time: 0.0012923547071335938
+Max Number of Consecutive False Breaches: 133
+Max Number of Consecutive Missed Breaches: 1
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+rf
+Task Model Train Time: 4.960505962371826
+User Models Average Train Time: 0.0008074817582597875
+User Prediction Accuracy: 0.9188731527093597
+Task Prediction Accuracy: 0.6499384236453202
+Average Prediction Time: 0.024925216619530923
+Max Number of Consecutive False Breaches: 47
+Max Number of Consecutive Missed Breaches: 7
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+knn
+Task Model Train Time: 0.008695840835571289
+User Models Average Train Time: 3.0954776726332797e-06
+User Prediction Accuracy: 0.8609144088669951
+Task Prediction Accuracy: 0.33466748768472904
+Average Prediction Time: 0.0030901500854292525
+Max Number of Consecutive False Breaches: 92
+Max Number of Consecutive Missed Breaches: 3
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+dt
+Task Model Train Time: 0.32158899307250977
+User Models Average Train Time: 4.602486974206464e-05
+User Prediction Accuracy: 0.8644935344827588
+Task Prediction Accuracy: 0.4910714285714285
+Average Prediction Time: 0.0005619335607648483
+Max Number of Consecutive False Breaches: 20
+Max Number of Consecutive Missed Breaches: 15
+
+=======================================================

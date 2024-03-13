@@ -39,11 +39,15 @@ def extract(user, task, haptics_or_ur3e=0, show_maxmin=False, interval=100):
                          (velocity[2] - prev_vel[2]) / t]
                 accel_norm = math.sqrt(accel[0] ** 2 + accel[1] ** 2 + accel[2] ** 2)
                 jerk = [(accel[0] - prev_accel[0]) / t, (accel[1] - prev_accel[1]) / t, (accel[2] - prev_accel[2]) / t]
-                slope_xy = np.arctan(velocity[1] / velocity[0])
-                slope_zx = np.arctan(velocity[0] / velocity[2])
-                curvature = curvature_numerator(velocity, accel) / (
+                try:
+                    slope_xy = np.arctan(velocity[1] / velocity[0])
+                    slope_zx = np.arctan(velocity[0] / velocity[2])
+                    curvature = curvature_numerator(velocity, accel) / (
                             (velocity[0] ** 2 + velocity[1] ** 2 + velocity[2] ** 2) ** (3 / 2))
-
+                except ZeroDivisionError:
+                    slope_xy = 0
+                    slope_zx = 0
+                    curvature = 0
                 to_append = [pos[0], pos[1], pos[2], pos_diff, velocity[0], velocity[1], velocity[2], accel[0],
                              accel[1], accel[2], accel_norm, jerk[0], jerk[1], jerk[2], slope_xy, slope_zx, curvature]
                 features.append(to_append)

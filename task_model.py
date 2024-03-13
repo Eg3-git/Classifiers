@@ -45,7 +45,9 @@ def train(method, haptics_or_ur3e=0):
     model.fit(train_data, train_classes)
     t2 = time.time()
 
-    print("Time to train:", (t2 - t1))
+    time_to_train = t2 - t1
+    print("Time to train:", time_to_train)
 
     name = "ur3e" if haptics_or_ur3e else "haptics"
     dump(model, "{m}_task_model_{h}.joblib".format(m=method, h=name))
+    return time_to_train
