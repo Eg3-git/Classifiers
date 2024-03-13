@@ -2,9 +2,11 @@ from feature_extraction import extract
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score
 import time
 from joblib import dump
+from dtaidistance import dtw
 
 
 def train(method, haptics_or_ur3e=0):
@@ -34,6 +36,8 @@ def train(method, haptics_or_ur3e=0):
         model = RandomForestClassifier()
     elif method == "knn":
         model = KNeighborsClassifier()
+    elif method == "dt":
+        model = DecisionTreeClassifier()
     else:
         raise Exception("Method must be 'svm', 'rf', or 'knn'")
 

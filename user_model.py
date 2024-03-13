@@ -1,6 +1,7 @@
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score
 from feature_extraction import extract
 from joblib import dump, load
@@ -11,7 +12,6 @@ intervals = [100]
 
 def train(methods, train_user, tasks_to_train, haptics_or_ur3e=0):
     all_users = ["u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8"]
-
 
     test_data = []
     test_classes = []
@@ -39,9 +39,10 @@ def train(methods, train_user, tasks_to_train, haptics_or_ur3e=0):
                 model = RandomForestClassifier()
             elif method == "knn":
                 model = KNeighborsClassifier()
+            elif method == "dt":
+                model = DecisionTreeClassifier()
             else:
                 raise Exception("Method must be 'svm', 'rf', or 'knn'")
-
 
             t1 = time.time()
             model.fit(train_data, train_classes)
@@ -68,7 +69,8 @@ def test(user, method, test_data, test_classes, task_classes, haptics_or_ur3e=0)
         t1 = time.time()
         predicted_task = task_model.predict([test_data[i]])[0]
         task_predictions.append(predicted_task)
-        user_model = load("models/{m}/{t}/{m}_{u}_{t}_{h}.joblib".format(m=method, t=tasks[predicted_task], u=user, h=name))
+        user_model = load(
+            "models/{m}/{t}/{m}_{u}_{t}_{h}.joblib".format(m=method, t=tasks[predicted_task], u=user, h=name))
         current_prediction = user_model.predict([test_data[i]])[0]
 
         if test_classes[i] == 0 and current_prediction != 0:
@@ -87,6 +89,3 @@ def test(user, method, test_data, test_classes, task_classes, haptics_or_ur3e=0)
     print("Tasks correctly classified:", accuracy_score(task_predictions, task_classes))
     print("Maximum number of false breaches:", max_consec_breaches)
     print("Avr prediction time:", tot_time / len(test_data))
-
-
-
