@@ -1,4 +1,5 @@
-import task_model, user_model, noise
+import task_model
+import user_model
 
 
 def bulk_test():
