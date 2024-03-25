@@ -10,7 +10,7 @@ import time
 intervals = [100]
 
 
-def train(methods, train_user, tasks_to_train, haptics_or_ur3e=0):
+def train(methods, train_user, tasks_to_train, haptics_or_ur3e=0, interval=100, verbose=True):
     all_users = ["u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8"]
 
     test_data = []
@@ -22,7 +22,7 @@ def train(methods, train_user, tasks_to_train, haptics_or_ur3e=0):
         train_data = []
         train_classes = []
         for u in all_users:
-            train, test = extract(u, task, haptics_or_ur3e)
+            train, test = extract(u, task, haptics_or_ur3e, interval=interval)
             train_data.extend(train)
             train_classes.extend([0 for _ in train] if u == train_user else [1 for _ in train])
             test_data.extend(test)
@@ -31,7 +31,9 @@ def train(methods, train_user, tasks_to_train, haptics_or_ur3e=0):
         t += 1
 
         for method in methods:
-            print("Training {m} model for {u} {t} with {n} data points".format(m=method, u=train_user, t=task, n=len(train_data)))
+            if verbose:
+                print("Training {m} model for {u} {t} with {n} data points".format(m=method, u=train_user, t=task,
+                                                                               n=len(train_data)))
 
             if method == "svm":
                 model = SVC()
@@ -52,11 +54,12 @@ def train(methods, train_user, tasks_to_train, haptics_or_ur3e=0):
             name = "ur3e" if haptics_or_ur3e else "haptics"
             dump(model, "models/{m}/{t}/{m}_{u}_{t}_{h}.joblib".format(m=method, t=task, u=train_user, h=name))
     avr_time = tot_time / len(task_classes)
-    print("Avr train time:", avr_time)
+    if verbose:
+        print("Avr train time:", avr_time)
     return test_data, test_classes, task_classes, avr_time
 
 
-def test(user, method, test_data, test_classes, task_classes, haptics_or_ur3e=0):
+def test(user, method, test_data, test_classes, task_classes, haptics_or_ur3e=0, verbose=True):
     tasks = ["abc", "cir", "star", "www", "xyz"]
     name = "ur3e" if haptics_or_ur3e else "haptics"
     task_model = load("{m}_task_model_{h}.joblib".format(m=method, h=name))
@@ -72,6 +75,7 @@ def test(user, method, test_data, test_classes, task_classes, haptics_or_ur3e=0)
         t1 = time.time()
         predicted_task = task_model.predict([test_data[i]])[0]
         task_predictions.append(predicted_task)
+
         user_model = load(
             "models/{m}/{t}/{m}_{u}_{t}_{h}.joblib".format(m=method, t=tasks[predicted_task], u=user, h=name))
         current_prediction = user_model.predict([test_data[i]])[0]
@@ -98,11 +102,12 @@ def test(user, method, test_data, test_classes, task_classes, haptics_or_ur3e=0)
     task_accuracy = accuracy_score(task_predictions, task_classes)
     avr_pred_time = tot_time / len(test_data)
 
-    print("Testing points:", len(test_data))
-    print("Users correctly classified:", user_accuracy)
-    print("Tasks correctly classified:", task_accuracy)
-    print("Maximum number of false breaches:", max_false_negs)
-    print("Maximum number of missed breaches:", max_false_pos)
-    print("Avr prediction time:", avr_pred_time)
+    if verbose:
+        print("Testing points:", len(test_data))
+        print("Users correctly classified:", user_accuracy)
+        print("Tasks correctly classified:", task_accuracy)
+        print("Maximum number of false breaches:", max_false_negs)
+        print("Maximum number of missed breaches:", max_false_pos)
+        print("Avr prediction time:", avr_pred_time)
 
     return user_accuracy, task_accuracy, max_false_negs, max_false_pos, avr_pred_time

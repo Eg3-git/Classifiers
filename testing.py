@@ -1,12 +1,17 @@
+from matplotlib import pyplot as plt
+from tqdm import tqdm
+
 import task_model
 import user_model
+
+users = ["u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8"]
+methods = ["svm", "rf", "knn", "dt"]
+tasks = ["abc", "cir", "star", "www", "xyz"]
 
 
 def bulk_test():
     results = [{}, {}]
-    users = ["u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8"]
-    methods = ["svm", "rf", "knn", "dt"]
-    tasks = ["abc", "cir", "star", "www", "xyz"]
+
     for hou in range(2):
 
         for m in methods:
@@ -60,4 +65,41 @@ def bulk_test():
             f.write("=======================================================\n")
 
 
-bulk_test()
+def find_best_interval():
+    for hou in range(1, 2):
+        all_user_accuracies = {m: [] for m in methods}
+        all_task_accuracies = {m: [] for m in methods}
+
+        for interval in tqdm(range(10, 100, 10)):
+            print(interval)
+            for m in methods:
+                print(m)
+                _ = task_model.train(m, hou, interval, verbose=False)
+                avg_user_accuracy = 0
+                avg_task_accuracy = 0
+                for u in users:
+                    test_data, test_classes, task_classes, _ = user_model.train([m], u, tasks, hou, interval,
+                                                                                verbose=False)
+
+                    user_accuracy, task_accuracy, _, _, _ = user_model.test(u, m, test_data, test_classes, task_classes,
+                                                                            hou, verbose=False)
+                    avg_user_accuracy += user_accuracy
+                    avg_task_accuracy += task_accuracy
+                all_user_accuracies[m].append(avg_user_accuracy / len(users))
+                all_task_accuracies[m].append(avg_task_accuracy / len(users))
+
+        for m in methods:
+            plt.plot(list(range(10, 100, 10)), all_user_accuracies[m])
+            plt.plot(list(range(10, 100, 10)), all_task_accuracies[m])
+            plt.title(f'User and task accuracies over interval - {m}')
+            plt.xlabel('Interval')
+            plt.ylabel('User accuracy')
+            plt.show()
+
+            print(
+                f"{m} The highest user accuracy was found at: {max(range(len(all_user_accuracies[m])), key=all_user_accuracies[m].__getitem__) + 10}")
+            print(
+                f"{m} The highest task accuracy was found at: {max(range(len(all_task_accuracies[m])), key=all_task_accuracies[m].__getitem__) + 10}")
+
+
+find_best_interval()

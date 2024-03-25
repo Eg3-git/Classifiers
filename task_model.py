@@ -9,7 +9,7 @@ from joblib import dump
 from dtaidistance import dtw
 
 
-def train(method, haptics_or_ur3e=0):
+def train(method, haptics_or_ur3e=0, interval=100, verbose=True):
     tasks = ["abc", "cir", "star", "www", "xyz"]
     classes = {"abc": 0, "cir": 1, "star": 2, "www": 3, "xyz": 4}
     users = ["u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8"]
@@ -20,15 +20,15 @@ def train(method, haptics_or_ur3e=0):
     test_classes = []
 
     for task in tasks:
-        print(task)
+
         for user in users:
-            train, test = extract(user, task, haptics_or_ur3e)
+            train, test = extract(user, task, haptics_or_ur3e, interval=interval)
             train_data.extend(train)
             test_data.extend(test)
             train_classes.extend([classes[task]] * len(train))
             test_classes.extend([classes[task]] * len(test))
-
-    print("Training {m} model with {n} data points".format(m=method, n=len(train_data)))
+    if verbose:
+        print("Training {m} model with {n} data points".format(m=method, n=len(train_data)))
 
     if method == "svm":
         model = SVC()
@@ -46,7 +46,8 @@ def train(method, haptics_or_ur3e=0):
     t2 = time.time()
 
     time_to_train = t2 - t1
-    print("Time to train:", time_to_train)
+    if verbose:
+        print("Time to train:", time_to_train)
 
     name = "ur3e" if haptics_or_ur3e else "haptics"
     dump(model, "{m}_task_model_{h}.joblib".format(m=method, h=name))
