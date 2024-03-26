@@ -2,10 +2,11 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, log_loss, confusion_matrix, roc_auc_score, f1_score
 from feature_extraction import extract
 from joblib import dump, load
 import time
+import numpy as np
 
 intervals = [100]
 
@@ -33,7 +34,7 @@ def train(methods, train_user, tasks_to_train, haptics_or_ur3e=0, interval=100, 
         for method in methods:
             if verbose:
                 print("Training {m} model for {u} {t} with {n} data points".format(m=method, u=train_user, t=task,
-                                                                               n=len(train_data)))
+                                                                                   n=len(train_data)))
 
             if method == "svm":
                 model = SVC()
@@ -65,49 +66,47 @@ def test(user, method, test_data, test_classes, task_classes, haptics_or_ur3e=0,
     task_model = load("{m}_task_model_{h}.joblib".format(m=method, h=name))
     user_predictions = []
     task_predictions = []
+    user_probs = []
+
     tot_time = 0
-    false_negs = 0
-    max_false_negs = 0
-    false_pos = 0
-    max_false_pos = 0
 
     for i in range(len(test_data)):
         t1 = time.time()
         predicted_task = task_model.predict([test_data[i]])[0]
-        task_predictions.append(predicted_task)
 
         user_model = load(
             "models/{m}/{t}/{m}_{u}_{t}_{h}.joblib".format(m=method, t=tasks[predicted_task], u=user, h=name))
         current_prediction = user_model.predict([test_data[i]])[0]
 
-        if test_classes[i] == 0 and current_prediction != 0:
-            false_negs += 1
-            if false_negs > max_false_negs:
-                max_false_negs = false_negs
-        else:
-            false_negs = 0
-
-        if test_classes[i] != 0 and current_prediction == 0:
-            false_pos += 1
-            if false_pos > max_false_pos:
-                max_false_pos = false_pos
-        else:
-            false_pos = 0
-
-        user_predictions.append(current_prediction)
         t2 = time.time()
         tot_time += (t2 - t1)
+
+        task_predictions.append(predicted_task)
+        user_predictions.append(current_prediction)
+        user_probs.append(user_model.predict_proba(test_data))
+
+
+    task_probs = task_model.predict_proba(test_data)
+
+    user_probs_avg = np.mean(user_probs, axis=0)
 
     user_accuracy = accuracy_score(user_predictions, test_classes)
     task_accuracy = accuracy_score(task_predictions, task_classes)
     avr_pred_time = tot_time / len(test_data)
+    user_log_loss_score = log_loss(test_classes, user_probs_avg)
+    task_log_loss_score = log_loss(task_classes, task_probs)
+    user_confusion_matrix = confusion_matrix(user_predictions, test_classes)
+    task_confusion_matrix = confusion_matrix(task_predictions, task_classes)
+    user_auc_score = roc_auc_score(test_classes, user_probs_avg[:, 1])
+    task_f1 = f1_score(task_predictions, task_classes, average='weighted')
+    user_f1 = f1_score(user_predictions, test_classes)
 
     if verbose:
         print("Testing points:", len(test_data))
         print("Users correctly classified:", user_accuracy)
         print("Tasks correctly classified:", task_accuracy)
-        print("Maximum number of false breaches:", max_false_negs)
-        print("Maximum number of missed breaches:", max_false_pos)
+        # print("Maximum number of false breaches:", max_false_negs)
+        # print("Maximum number of missed breaches:", max_false_pos)
         print("Avr prediction time:", avr_pred_time)
 
-    return user_accuracy, task_accuracy, max_false_negs, max_false_pos, avr_pred_time
+    return user_accuracy, task_accuracy, avr_pred_time, user_log_loss_score, task_log_loss_score, user_confusion_matrix, task_confusion_matrix, user_auc_score, task_f1, user_f1
