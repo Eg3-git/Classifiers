@@ -85,14 +85,15 @@ def bulk_test():
 
 
 def find_best_interval():
+    intervals = [50, 100, 150, 200, 250, 300]
     for hou in range(1, 2):
         all_user_accuracies = {m: [] for m in methods}
         all_task_accuracies = {m: [] for m in methods}
 
-        for interval in tqdm(range(10, 100, 10)):
-            print(interval)
+        for interval in tqdm(intervals):
+
             for m in methods:
-                print(m)
+
                 _ = task_model.train(m, hou, interval, verbose=False)
                 avg_user_accuracy = 0
                 avg_task_accuracy = 0
@@ -108,8 +109,8 @@ def find_best_interval():
                 all_task_accuracies[m].append(avg_task_accuracy / len(users))
 
         for m in methods:
-            plt.plot(list(range(10, 100, 10)), all_user_accuracies[m])
-            plt.plot(list(range(10, 100, 10)), all_task_accuracies[m])
+            plt.plot(intervals, all_user_accuracies[m])
+            plt.plot(intervals, all_task_accuracies[m])
             plt.title(f'User and task accuracies over interval - {m}')
             plt.xlabel('Interval')
             plt.ylabel('User accuracy')
