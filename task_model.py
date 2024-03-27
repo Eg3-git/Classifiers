@@ -31,7 +31,7 @@ def train(method, haptics_or_ur3e=0, interval=100, verbose=True):
         print("Training {m} model with {n} data points".format(m=method, n=len(train_data)))
 
     if method == "svm":
-        model = SVC()
+        model = SVC(probability=True)
     elif method == "rf":
         model = RandomForestClassifier()
     elif method == "knn":

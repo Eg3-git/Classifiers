@@ -1,84 +1,124 @@
 HAPTICS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 svm
-Task Model Train Time: 0.20746421813964844
-User Models Average Train Time: 2.5665211151855307e-05
+Task Model Train Time: 1.0884768962860107
+User Models Average Train Time: 8.974607971082558e-05
 User Prediction Accuracy: 0.8745136186770428
 Task Prediction Accuracy: 0.2308690012970169
-Average Prediction Time: 0.0008800051787484017
-Max Number of Consecutive False Breaches: 32
-Max Number of Consecutive Missed Breaches: 1
+Average Prediction Time: 0.0007767857435303129
+Average User Log Loss Score: 0.3955799320038953
+Average Task Log Loss Score: 1.5737498348311543
+User Confusion Matrix Score: 0.8745136186770428
+Task Confusion Matrix Score: 0.23086900129701687
+User AUC Score: 0.6275177198248467
+User F1 Score: 0.9326138322103127
+Task F1 Score: 0.3694185365995375
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 rf
-Task Model Train Time: 0.7870042324066162
-User Models Average Train Time: 0.0008966802932254381
-User Prediction Accuracy: 0.8837548638132295
-Task Prediction Accuracy: 0.5914396887159533
-Average Prediction Time: 0.023894350043221362
-Max Number of Consecutive False Breaches: 28
-Max Number of Consecutive Missed Breaches: 7
+Task Model Train Time: 0.7032132148742676
+User Models Average Train Time: 0.0008495104065510395
+User Prediction Accuracy: 0.9014267185473412
+Task Prediction Accuracy: 0.603112840466926
+Average Prediction Time: 0.023232467366254436
+Average User Log Loss Score: 0.30779055099160063
+Average Task Log Loss Score: 1.1367941375165478
+User Confusion Matrix Score: 0.9014267185473411
+Task Confusion Matrix Score: 0.603112840466926
+User AUC Score: 0.8013787795122447
+User F1 Score: 0.9457847472682411
+Task F1 Score: 0.6056243758287271
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 knn
-Task Model Train Time: 0.0023102760314941406
-User Models Average Train Time: 5.088273034794631e-06
-User Prediction Accuracy: 0.8555447470817119
+Task Model Train Time: 0.002162933349609375
+User Models Average Train Time: 4.558982243024577e-06
+User Prediction Accuracy: 0.8513294422827495
 Task Prediction Accuracy: 0.34370946822308696
-Average Prediction Time: 0.002806996750305908
-Max Number of Consecutive False Breaches: 24
-Max Number of Consecutive Missed Breaches: 4
+Average Prediction Time: 0.0015442621073988782
+Average User Log Loss Score: 0.6853507501143049
+Average Task Log Loss Score: 10.512816108282047
+User Confusion Matrix Score: 0.8513294422827496
+Task Confusion Matrix Score: 0.3437094682230869
+User AUC Score: 0.6305804404044989
+User F1 Score: 0.9177998344895787
+Task F1 Score: 0.35410768847951596
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 dt
-Task Model Train Time: 0.04427313804626465
-User Models Average Train Time: 3.3429199310282947e-05
-User Prediction Accuracy: 0.8305771725032425
-Task Prediction Accuracy: 0.42801556420233455
-Average Prediction Time: 0.0005531020742755301
-Max Number of Consecutive False Breaches: 22
-Max Number of Consecutive Missed Breaches: 7
+Task Model Train Time: 0.04030323028564453
+User Models Average Train Time: 3.1842100017265585e-05
+User Prediction Accuracy: 0.8399805447470816
+Task Prediction Accuracy: 0.424124513618677
+Average Prediction Time: 0.0005063756276042854
+Average User Log Loss Score: 1.1582592482133582
+Average Task Log Loss Score: 19.21274074648772
+User Confusion Matrix Score: 0.8399805447470817
+Task Confusion Matrix Score: 0.42412451361867703
+User AUC Score: 0.7282741512981952
+User F1 Score: 0.9078379702766116
+Task F1 Score: 0.4249980287140414
 
 =======================================================
 UR3E
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 svm
-Task Model Train Time: 4.365232706069946
-User Models Average Train Time: 4.5124285400207404e-05
-User Prediction Accuracy: 0.8748460591133005
+Task Model Train Time: 21.857088327407837
+User Models Average Train Time: 0.00022481958120327276
+User Prediction Accuracy: 0.8748845443349753
 Task Prediction Accuracy: 0.2364532019704433
-Average Prediction Time: 0.0013055522637120608
-Max Number of Consecutive False Breaches: 133
-Max Number of Consecutive Missed Breaches: 1
+Average Prediction Time: 0.0011366122755511055
+Average User Log Loss Score: 0.37143040428861474
+Average Task Log Loss Score: 1.6046019494627919
+User Confusion Matrix Score: 0.8748845443349754
+Task Confusion Matrix Score: 0.23645320197044334
+User AUC Score: 0.501397651146121
+User F1 Score: 0.9328807585118554
+Task F1 Score: 0.36925652213787913
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 rf
-Task Model Train Time: 5.024975061416626
-User Models Average Train Time: 0.0008065231933529155
-User Prediction Accuracy: 0.8896628694581281
-Task Prediction Accuracy: 0.6413177339901478
-Average Prediction Time: 0.02499712047538734
-Max Number of Consecutive False Breaches: 103
-Max Number of Consecutive Missed Breaches: 18
+Task Model Train Time: 4.381556987762451
+User Models Average Train Time: 0.0007574691028870973
+User Prediction Accuracy: 0.9201816502463054
+Task Prediction Accuracy: 0.6511699507389163
+Average Prediction Time: 0.024350031017523095
+Average User Log Loss Score: 0.2604616704476752
+Average Task Log Loss Score: 1.022630811054971
+User Confusion Matrix Score: 0.9201816502463054
+Task Confusion Matrix Score: 0.6511699507389163
+User AUC Score: 0.8872972396780763
+User F1 Score: 0.9554041594419336
+Task F1 Score: 0.6517419008992394
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 knn
-Task Model Train Time: 0.008699178695678711
-User Models Average Train Time: 3.0734929545172334e-06
-User Prediction Accuracy: 0.857489224137931
+Task Model Train Time: 0.007563114166259766
+User Models Average Train Time: 3.0456725599730545e-06
+User Prediction Accuracy: 0.8609144088669951
 Task Prediction Accuracy: 0.33466748768472904
-Average Prediction Time: 0.0033268513699323673
-Max Number of Consecutive False Breaches: 88
-Max Number of Consecutive Missed Breaches: 4
+Average Prediction Time: 0.0015176532083544239
+Average User Log Loss Score: 0.5330341083850479
+Average Task Log Loss Score: 9.813564033744761
+User Confusion Matrix Score: 0.8609144088669951
+Task Confusion Matrix Score: 0.33466748768472904
+User AUC Score: 0.6655975952372055
+User F1 Score: 0.9226847407609383
+Task F1 Score: 0.3407747161607681
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 dt
-Task Model Train Time: 0.3220400810241699
-User Models Average Train Time: 4.5760851261650995e-05
-User Prediction Accuracy: 0.8550646551724139
-Task Prediction Accuracy: 0.49415024630541865
-Average Prediction Time: 0.0005653682141908872
-Max Number of Consecutive False Breaches: 72
-Max Number of Consecutive Missed Breaches: 18
+Task Model Train Time: 0.2905540466308594
+User Models Average Train Time: 4.330195780164502e-05
+User Prediction Accuracy: 0.86876539408867
+Task Prediction Accuracy: 0.4981527093596059
+Average Prediction Time: 0.0005104383040825135
+Average User Log Loss Score: 0.9234902012886068
+Average Task Log Loss Score: 18.088409798109897
+User Confusion Matrix Score: 0.8687653940886699
+Task Confusion Matrix Score: 0.4981527093596059
+User AUC Score: 0.8014008433594707
+User F1 Score: 0.9241677361687509
+Task F1 Score: 0.4985412160480057
 
 =======================================================

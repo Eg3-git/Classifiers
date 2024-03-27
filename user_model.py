@@ -37,7 +37,7 @@ def train(methods, train_user, tasks_to_train, haptics_or_ur3e=0, interval=100, 
                                                                                    n=len(train_data)))
 
             if method == "svm":
-                model = SVC()
+                model = SVC(probability=True)
             elif method == "rf":
                 model = RandomForestClassifier()
             elif method == "knn":
@@ -76,6 +76,7 @@ def test(user, method, test_data, test_classes, task_classes, haptics_or_ur3e=0,
 
         user_model = load(
             "models/{m}/{t}/{m}_{u}_{t}_{h}.joblib".format(m=method, t=tasks[predicted_task], u=user, h=name))
+
         current_prediction = user_model.predict([test_data[i]])[0]
 
         t2 = time.time()
@@ -84,7 +85,6 @@ def test(user, method, test_data, test_classes, task_classes, haptics_or_ur3e=0,
         task_predictions.append(predicted_task)
         user_predictions.append(current_prediction)
         user_probs.append(user_model.predict_proba(test_data))
-
 
     task_probs = task_model.predict_proba(test_data)
 
