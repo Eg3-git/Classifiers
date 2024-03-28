@@ -22,7 +22,7 @@ def calc_dtw(s1, s2, weights):
     return weighted_distance
 
 
-def weight_train(sample_ratio=0.1):
+def weight_train_task(sample_ratio=0.1):
     to_be_minimised = {}
     to_be_maximised = {}
     all_task_data = {}
@@ -102,6 +102,7 @@ def task_train(n=10, sample_ratio=0.1):
         for k in best_indices.keys():
             best_samples[task].extend(task_data[k:k + 10])
 
+    print(best_samples)
     with open("dtw_task_model_ur3e.csv", "w") as model:
         writer = csv.writer(model)
         for task, samples in best_samples.items():
@@ -142,6 +143,50 @@ def task_test(test_data):
     print(score / total)
 
 
+def weight_train_user(sample_ratio=0.1):
+    for task in tqdm(tasks):
+        user_weights = {u: np.zeros((17,)) for u in users}
+        to_be_minimised = {}
+        to_be_maximised = {}
+        task_user_data = {}
+
+        for user in users:
+            train, _ = extract(user, task, haptics_or_ur3e=1, interval=10)
+            task_user_data[user] = train
+
+            to_be_minimised[user] = np.zeros((17,))
+            to_be_maximised[user] = np.zeros((17,))
+
+        for user1 in users:
+            for i in range(0, int(len(task_user_data[user1]) * sample_ratio), 10):
+                for user2 in users:
+                    for j in range(0, int(len(task_user_data[user2]) * sample_ratio), 10):
+                        for f in range(17):
+                            full_weight = np.zeros((17,))
+                            full_weight[f] = 1
+
+                            dist = calc_dtw(task_user_data[user1][i:i + 10], task_user_data[user2][j:j + 10],
+                                            full_weight)
+
+                            if user1 == user2:
+                                to_be_minimised[user1][f] += dist
+                            else:
+                                to_be_maximised[user1][f] += dist
+
+            ratio_max_to_min = to_be_maximised[user1] / to_be_minimised[user1]
+            r_total = ratio_max_to_min.sum()
+            user_weights[user1] = (ratio_max_to_min / r_total)
+
+        with open(f"models/dtw/{task}/{task}_user_weight_results.csv", "w") as results:
+            writer = csv.writer(results)
+            for user in users:
+                row = [user]
+                for f in range(17):
+                    row.append(user_weights[user][f])
+
+                writer.writerow(row)
+
+
 def user_train():
     for user in users:
         user_data = []
@@ -161,5 +206,6 @@ def user_train():
 
 
 # weight_train(0.1)
-d = task_train()
-task_test(d)
+weight_train_user(0.1)
+#d = task_train()
+#task_test(d)
