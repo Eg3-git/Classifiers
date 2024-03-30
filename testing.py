@@ -6,8 +6,8 @@ import task_model
 import user_model
 
 users = ["u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8"]
-# methods = ["dt"]
-methods = ["svm", "rf", "knn", "dt"]
+methods = ["dt"]
+#methods = ["svm", "rf", "knn", "dt"]
 tasks = ["abc", "cir", "star", "www", "xyz"]
 
 
@@ -53,6 +53,7 @@ def bulk_test():
                 user_f1_total += u_f1
                 task_f1_total += t_f1
 
+            print(user_confusion_matrix)
             results[hou][m]["User Models Average Train Time"] = train_time_total / len(users)
             results[hou][m]["User Prediction Accuracy"] = user_acc_total / len(users)
             results[hou][m]["Task Prediction Accuracy"] = task_acc_total / len(users)

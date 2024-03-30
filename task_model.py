@@ -9,7 +9,7 @@ from joblib import dump
 from dtaidistance import dtw
 
 
-def train(method, haptics_or_ur3e=0, interval=100, verbose=True):
+def train(method, haptics_or_ur3e=0, interval=100, verbose=True, paras = {}):
     tasks = ["abc", "cir", "star", "www", "xyz"]
     classes = {"abc": 0, "cir": 1, "star": 2, "www": 3, "xyz": 4}
     users = ["u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8"]
@@ -31,7 +31,7 @@ def train(method, haptics_or_ur3e=0, interval=100, verbose=True):
         print("Training {m} model with {n} data points".format(m=method, n=len(train_data)))
 
     if method == "svm":
-        model = SVC(probability=True)
+        model = SVC(probability=True, kernel=paras["kernel"], gamma=paras["gamma"])
     elif method == "rf":
         model = RandomForestClassifier()
     elif method == "knn":

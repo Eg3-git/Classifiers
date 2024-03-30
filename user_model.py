@@ -11,7 +11,7 @@ import numpy as np
 intervals = [100]
 
 
-def train(methods, train_user, tasks_to_train, haptics_or_ur3e=0, interval=100, verbose=True):
+def train(methods, train_user, tasks_to_train, haptics_or_ur3e=0, interval=100, verbose=True, paras={}):
     all_users = ["u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8"]
 
     test_data = []
@@ -37,7 +37,7 @@ def train(methods, train_user, tasks_to_train, haptics_or_ur3e=0, interval=100, 
                                                                                    n=len(train_data)))
 
             if method == "svm":
-                model = SVC(probability=True)
+                model = SVC(probability=True, kernel=paras["kernel"], gamma=paras["gamma"])
             elif method == "rf":
                 model = RandomForestClassifier()
             elif method == "knn":
@@ -60,7 +60,7 @@ def train(methods, train_user, tasks_to_train, haptics_or_ur3e=0, interval=100, 
     return test_data, test_classes, task_classes, avr_time
 
 
-def test(user, method, test_data, test_classes, task_classes, haptics_or_ur3e=0, verbose=True):
+def test(user, method, test_data, test_classes, task_classes, haptics_or_ur3e=0, verbose=True, metrics=True):
     tasks = ["abc", "cir", "star", "www", "xyz"]
     name = "ur3e" if haptics_or_ur3e else "haptics"
     task_model = load("{m}_task_model_{h}.joblib".format(m=method, h=name))
@@ -84,22 +84,23 @@ def test(user, method, test_data, test_classes, task_classes, haptics_or_ur3e=0,
 
         task_predictions.append(predicted_task)
         user_predictions.append(current_prediction)
-        user_probs.append(user_model.predict_proba(test_data))
-
-    task_probs = task_model.predict_proba(test_data)
-
-    user_probs_avg = np.mean(user_probs, axis=0)
+        if metrics:
+            user_probs.append(user_model.predict_proba(test_data))
 
     user_accuracy = accuracy_score(user_predictions, test_classes)
     task_accuracy = accuracy_score(task_predictions, task_classes)
     avr_pred_time = tot_time / len(test_data)
-    user_log_loss_score = log_loss(test_classes, user_probs_avg)
-    task_log_loss_score = log_loss(task_classes, task_probs)
-    user_confusion_matrix = confusion_matrix(user_predictions, test_classes)
-    task_confusion_matrix = confusion_matrix(task_predictions, task_classes)
-    user_auc_score = roc_auc_score(test_classes, user_probs_avg[:, 1])
-    task_f1 = f1_score(task_predictions, task_classes, average='weighted')
-    user_f1 = f1_score(user_predictions, test_classes)
+
+    if metrics:
+        task_probs = task_model.predict_proba(test_data)
+        user_probs_avg = np.mean(user_probs, axis=0)
+        user_log_loss_score = log_loss(test_classes, user_probs_avg)
+        task_log_loss_score = log_loss(task_classes, task_probs)
+        user_confusion_matrix = confusion_matrix(user_predictions, test_classes)
+        task_confusion_matrix = confusion_matrix(task_predictions, task_classes)
+        user_auc_score = roc_auc_score(test_classes, user_probs_avg[:, 1])
+        task_f1 = f1_score(task_predictions, task_classes, average='weighted')
+        user_f1 = f1_score(user_predictions, test_classes)
 
     if verbose:
         print("Testing points:", len(test_data))
@@ -109,4 +110,7 @@ def test(user, method, test_data, test_classes, task_classes, haptics_or_ur3e=0,
         # print("Maximum number of missed breaches:", max_false_pos)
         print("Avr prediction time:", avr_pred_time)
 
-    return user_accuracy, task_accuracy, avr_pred_time, user_log_loss_score, task_log_loss_score, user_confusion_matrix, task_confusion_matrix, user_auc_score, task_f1, user_f1
+    if metrics:
+        return user_accuracy, task_accuracy, avr_pred_time, user_log_loss_score, task_log_loss_score, user_confusion_matrix, task_confusion_matrix, user_auc_score, task_f1, user_f1
+    else:
+        return user_accuracy, task_accuracy, avr_pred_time
