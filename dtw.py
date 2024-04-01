@@ -4,8 +4,8 @@ from feature_extraction import extract
 from dtaidistance import dtw
 import numpy as np
 from tqdm import tqdm
+from sklearn.metrics import accuracy_score
 
-# ws = [0.09, 0.08, 0.06, 0.06, 0.04, 0.06, 0.05, 0.05, 0.07, 0.06, 0.07, 0.05, 0.06, 0.05, 0.06, 0.05, 0.04]
 tasks = ["abc", "cir", "star", "www", "xyz"]
 users = ["u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8"]
 
@@ -51,7 +51,7 @@ def weight_train_task(sample_ratio=0.1):
                         else:
                             to_be_maximised[task1][f] += dist
 
-    with open("weight_results.csv", "w") as results:
+    with open("task_weight_results.csv", "w") as results:
         writer = csv.writer(results)
         for task in tasks:
             row = []
@@ -64,7 +64,7 @@ def weight_train_task(sample_ratio=0.1):
             writer.writerow(row)
 
 
-def load_weights():
+def load_task_weights():
     task_weights = {}
     with open("weight_results.csv", "r") as input_file:
         raw_data = csv.reader(input_file)
@@ -78,7 +78,7 @@ def load_weights():
 
 
 def task_train(n=10, sample_ratio=0.1):
-    task_weights = load_weights()
+    task_weights = load_task_weights()
     best_samples = {}
     test_data = {}
     for task in tqdm(tasks):
@@ -109,12 +109,10 @@ def task_train(n=10, sample_ratio=0.1):
             row = [task] + [x for point in samples for x in point]
             writer.writerow(row)
 
-    print(len(best_samples["abc"]))
     return test_data
 
 
-def task_test(test_data):
-    task_weights = load_weights()
+def load_task_model():
     task_data = {}
     with open("dtw_task_model_ur3e.csv", "r") as model:
         raw_data = csv.reader(model)
@@ -126,21 +124,7 @@ def task_test(test_data):
                     point.append(float(line[p + x]))
                 task_data[line[0]].append(point)
 
-    score = 0
-    total = 0
-    for actual in tqdm(tasks):
-        for i in range(0, len(test_data[actual]), 10):
-            task_distances = {task: 0 for task in tasks}
-            for task in tasks:
-                for j in range(0, len(task_data[task]), 10):
-                    task_distances[task] += calc_dtw(test_data[actual][i:i + 10], task_data[task][j:j + 10],
-                                                     task_weights[task])
-            prediction = min(task_distances, key=task_distances.get)
-            if prediction == actual:
-                score += 1
-            total += 1
-
-    print(score / total)
+    return task_data
 
 
 def weight_train_user(sample_ratio=0.1):
@@ -187,25 +171,110 @@ def weight_train_user(sample_ratio=0.1):
                 writer.writerow(row)
 
 
-def user_train():
-    for user in users:
-        user_data = []
-        dtw_map = {}
-        for task in tasks:
-            train, test = extract(user, task, haptics_or_ur3e=1, interval=10)
-            user_data.extend(train)
+def user_train(task, sample_ratio=0.1, n=10):
+    user_weights = load_user_weights(task)
+    test_data = {}
+    for user in tqdm(users):
+        best_samples = []
 
-        print("Calculating distance for", user)
-        for i in tqdm(range(0, len(user_data) - 10, 10)):
+        train, test = extract(user, task, haptics_or_ur3e=1, interval=10)
+        test_data[user] = test
+
+        max_iter = int(len(train) * sample_ratio) - 10
+        dtw_map = {}
+        for i in range(0, max_iter, 10):
             total_distance = 0
-            for j in range(0, len(user_data) - 10, 10):
-                total_distance += calc_dtw(user_data[i:i + 10], user_data[j:j + 10])
+            for j in range(0, max_iter, 10):
+                total_distance += calc_dtw(train[i:i + 10], train[j:j + 10], user_weights[user])
+
             dtw_map[i] = total_distance
 
-        print({k: v for k, v in sorted(dtw_map.items(), key=lambda item: item[1])})
+        best_indices = {k: v for k, v in sorted(dtw_map.items(), key=lambda item: item[1])[:n]}
+        for k in best_indices.keys():
+            best_samples.extend(train[k:k + 10])
+
+        with open(f"models/dtw/{task}/dtw_{user}_{task}_ur3e.csv", "w") as model:
+            writer = csv.writer(model)
+            for vector in best_samples:
+                writer.writerow(vector)
+
+    return test_data
+
+
+def big_test(sample_ratio=0.1):
+    task_model = load_task_model()
+    task_weights = load_task_weights()
+    all_test_data = {}
+    correct_task = 0
+    correct_user = 0
+    total = 0
+    for task in tasks:
+        all_test_data[task] = user_train(task)
+
+    for task in tqdm(tasks):
+        for user in users:
+            for i in range(0, int(len(all_test_data[task][user])*sample_ratio), 10):
+
+                min_task_distance = -1
+                best_task = ""
+                for t in tasks:
+                    for j in range(0, len(task_model[t]), 10):
+                        distance = calc_dtw(all_test_data[task][user][i:i + 10], task_model[t][j:j + 10],
+                                            task_weights[t])
+                        if distance < min_task_distance or min_task_distance == -1:
+                            min_task_distance = distance
+                            best_task = t
+
+                user_weights = load_user_weights(best_task)
+                min_user_distance = -1
+                user_pred = ""
+                for u in users:
+                    user_model = load_user_model(u, best_task)
+                    for j in range(0, len(user_model), 10):
+                        distance = calc_dtw(all_test_data[task][user][i:i + 10], user_model[j:j + 10], user_weights[u])
+                        if distance < min_user_distance or min_user_distance == -1:
+                            min_user_distance = distance
+                            user_pred = u
+
+                if best_task == task:
+                    correct_task += 1
+                if user_pred == user:
+                    correct_user += 1
+
+                total += 1
+    print("Task accuracy:", correct_task / total)
+    print("User accuracy:", correct_user / total)
+
+
+def load_user_model(user, task):
+    user_data = []
+    with open(f"models/dtw/{task}/dtw_{user}_{task}_ur3e.csv", "r") as model:
+        raw_data = csv.reader(model)
+        for line in raw_data:
+            point = []
+            for val in line:
+                point.append(float(val))
+            user_data.append(point)
+
+    return user_data
+
+
+def load_user_weights(task):
+    user_weights = {}
+    with open(f"models/dtw/{task}/{task}_user_weight_results.csv", "r") as input_file:
+        raw_data = csv.reader(input_file)
+
+        for line in raw_data:
+            user_weights[line[0]] = np.zeros((17,))
+            for f in range(17):
+                user_weights[line[0]][f] = float(line[f + 1])
+
+    return user_weights
 
 
 # weight_train(0.1)
-weight_train_user(0.1)
-#d = task_train()
-#task_test(d)
+# weight_train_user(0.1)
+# d = task_train()
+# task_test(d)
+
+big_test()

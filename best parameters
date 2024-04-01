@@ -1,0 +1,16 @@
+svm
+task 9: kernel = sigmoid, gamma = scale
+user 6: kernel = rbf, gamma = auto
+
+rf:
+task 0: criterion = entropy, max_features = log2
+user 0: criterion = entropy, max_features = log2
+
+knn:
+task 6: weight = distance, alg = auto, p = 1, k = any
+user 7: weight = uniform, alg = auto, p = 1, k = 15
+
+
+dt:
+task 0: criterion = gini, splitter = best, max_features = None
+user 0: criterion = entropy, splitter = best, max_features = None

@@ -11,7 +11,7 @@ import numpy as np
 intervals = [100]
 
 
-def train(methods, train_user, tasks_to_train, haptics_or_ur3e=0, interval=100, verbose=True, paras={}):
+def train(methods, train_user, tasks_to_train, haptics_or_ur3e=0, interval=100, verbose=True):
     all_users = ["u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8"]
 
     test_data = []
@@ -37,13 +37,13 @@ def train(methods, train_user, tasks_to_train, haptics_or_ur3e=0, interval=100, 
                                                                                    n=len(train_data)))
 
             if method == "svm":
-                model = SVC(probability=True, kernel=paras["kernel"], gamma=paras["gamma"])
+                model = SVC(probability=True, kernel='rbf', gamma='auto')
             elif method == "rf":
-                model = RandomForestClassifier()
+                model = RandomForestClassifier(n_estimators=100, criterion="entropy", max_features="log2")
             elif method == "knn":
-                model = KNeighborsClassifier()
+                model = KNeighborsClassifier(weights="uniform", n_neighbors=15, algorithm="auto", p=1)
             elif method == "dt":
-                model = DecisionTreeClassifier()
+                model = DecisionTreeClassifier(criterion="entropy", max_features=None, splitter="best")
             else:
                 raise Exception("Method must be 'svm', 'rf', 'knn', or 'dt'")
 
@@ -96,11 +96,11 @@ def test(user, method, test_data, test_classes, task_classes, haptics_or_ur3e=0,
         user_probs_avg = np.mean(user_probs, axis=0)
         user_log_loss_score = log_loss(test_classes, user_probs_avg)
         task_log_loss_score = log_loss(task_classes, task_probs)
-        user_confusion_matrix = confusion_matrix(user_predictions, test_classes)
-        task_confusion_matrix = confusion_matrix(task_predictions, task_classes)
+        user_confusion_matrix = confusion_matrix(test_classes, user_predictions)
+        task_confusion_matrix = confusion_matrix(task_classes, task_predictions)
         user_auc_score = roc_auc_score(test_classes, user_probs_avg[:, 1])
-        task_f1 = f1_score(task_predictions, task_classes, average='weighted')
-        user_f1 = f1_score(user_predictions, test_classes)
+        task_f1 = f1_score(task_classes, task_predictions, average='weighted')
+        user_f1 = f1_score(test_classes, user_predictions)
 
     if verbose:
         print("Testing points:", len(test_data))
