@@ -92,10 +92,9 @@ def test(user, method, test_data, test_classes, task_classes, haptics_or_ur3e=0,
     avr_pred_time = tot_time / len(test_data)
 
     if metrics:
-        task_probs = task_model.predict_proba(test_data)
+
         user_probs_avg = np.mean(user_probs, axis=0)
-        user_log_loss_score = log_loss(test_classes, user_probs_avg)
-        task_log_loss_score = log_loss(task_classes, task_probs)
+
         user_confusion_matrix = confusion_matrix(test_classes, user_predictions)
         task_confusion_matrix = confusion_matrix(task_classes, task_predictions)
         user_auc_score = roc_auc_score(test_classes, user_probs_avg[:, 1])
@@ -111,6 +110,6 @@ def test(user, method, test_data, test_classes, task_classes, haptics_or_ur3e=0,
         print("Avr prediction time:", avr_pred_time)
 
     if metrics:
-        return user_accuracy, task_accuracy, avr_pred_time, user_log_loss_score, task_log_loss_score, user_confusion_matrix, task_confusion_matrix, user_auc_score, task_f1, user_f1
+        return user_accuracy, task_accuracy, avr_pred_time, user_confusion_matrix, task_confusion_matrix, user_auc_score, task_f1, user_f1
     else:
         return user_accuracy, task_accuracy, avr_pred_time
