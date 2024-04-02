@@ -85,19 +85,18 @@ def test(user, method, test_data, test_classes, task_classes, haptics_or_ur3e=0,
         task_predictions.append(predicted_task)
         user_predictions.append(current_prediction)
         if metrics:
-            user_probs.append(user_model.predict_proba(test_data))
+            pass  # user_probs.append(user_model.predict_proba(test_data))
 
     user_accuracy = accuracy_score(user_predictions, test_classes)
     task_accuracy = accuracy_score(task_predictions, task_classes)
     avr_pred_time = tot_time / len(test_data)
 
     if metrics:
-
-        user_probs_avg = np.mean(user_probs, axis=0)
+        # user_probs_avg = np.mean(user_probs, axis=0)
 
         user_confusion_matrix = confusion_matrix(test_classes, user_predictions)
         task_confusion_matrix = confusion_matrix(task_classes, task_predictions)
-        user_auc_score = roc_auc_score(test_classes, user_probs_avg[:, 1])
+        user_auc_score = 0  # roc_auc_score(test_classes, user_probs_avg[:, 0])
         task_f1 = f1_score(task_classes, task_predictions, average='weighted')
         user_f1 = f1_score(test_classes, user_predictions)
 
@@ -113,3 +112,28 @@ def test(user, method, test_data, test_classes, task_classes, haptics_or_ur3e=0,
         return user_accuracy, task_accuracy, avr_pred_time, user_confusion_matrix, task_confusion_matrix, user_auc_score, task_f1, user_f1
     else:
         return user_accuracy, task_accuracy, avr_pred_time
+
+
+def calc_auc(method, haptics_or_ur3e=0, interval=100, verbose=True, metrics=True):
+    all_users = ["u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8"]
+    tasks = ["abc", "cir", "star", "www", "xyz"]
+    auc_score_total = 0
+
+    for user in all_users:
+        for task in tasks:
+            name = "ur3e" if haptics_or_ur3e else "haptics"
+            test_data = []
+            test_classes = []
+
+            for u in all_users:
+                _, test = extract(u, task, haptics_or_ur3e, interval=interval)
+                test_data.extend(test)
+                test_classes.extend([0 for _ in test] if u == user else [1 for _ in test])
+
+            user_model = load(
+                "models/{m}/{t}/{m}_{u}_{t}_{h}.joblib".format(m=method, t=task, u=user, h=name))
+
+            user_probs = user_model.predict_proba(test_data)
+            auc_score_total += roc_auc_score(test_classes, user_probs[:, 0])
+
+    return auc_score_total / (len(all_users) * len(tasks))

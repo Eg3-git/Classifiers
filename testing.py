@@ -20,6 +20,7 @@ def bulk_test():
     for i in tqdm(intervals):
 
         for m in methods:
+
             task_train_time = results[m][i]["Task Model Train Time"] = task_model.train(m, haptics_or_ur3e=1,
                                                                                         interval=i, verbose=False)
 
@@ -33,6 +34,7 @@ def bulk_test():
             task_confusion_matrix = np.zeros((5, 5))
             user_confusion_matrix = np.zeros((2, 2))
             for u in users:
+
                 test_data, test_classes, task_classes, train_time_one_user = user_model.train([m], u, tasks,
                                                                                               haptics_or_ur3e=1,
                                                                                               interval=i, verbose=False)

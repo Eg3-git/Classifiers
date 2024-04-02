@@ -31,7 +31,7 @@ def train(method, haptics_or_ur3e=1, interval=100, verbose=True):
         print("Training {m} model with {n} data points".format(m=method, n=len(train_data)))
 
     if method == "svm":
-        model = SVC(probability=True, kernel="sigmoid", gamma="scale")
+        model = SVC(kernel="sigmoid", gamma="scale")
     elif method == "rf":
         model = RandomForestClassifier(criterion="entropy", max_features="log2", n_estimators=100)
     elif method == "knn":
