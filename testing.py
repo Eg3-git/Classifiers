@@ -44,7 +44,7 @@ def bulk_test():
                     test_data,
                     test_classes,
                     task_classes,
-                    haptics_or_ur3e=1, verbose=False, metrics=True, true_task=True)
+                    haptics_or_ur3e=1, verbose=False, metrics=True, true_task=False)
 
                 user_acc_total += user_accuracy
                 task_acc_total += task_accuracy
@@ -91,6 +91,7 @@ def bulk_test():
 
     plot_line(intervals, [[results[m][i]["Average Prediction Time"] for i in intervals] for m in methods], methods_caps,
               "Time Interval", "Average Prediction Time (s)", "Effect of Time Interval on Prediction Time")
+
 
     with open("results.txt", "w") as f:
         for i in intervals:

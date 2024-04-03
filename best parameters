@@ -8,7 +8,7 @@ user 0: criterion = entropy, max_features = log2
 
 knn:
 task 6: weight = distance, alg = auto, p = 1, k = any
-user 7: weight = uniform, alg = auto, p = 1, k = 15
+user 7: weight = uniform, alg = auto, p = 1, k = 85
 
 
 dt:

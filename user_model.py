@@ -16,9 +16,9 @@ intervals = [100]
 def train(methods, train_user, tasks_to_train, haptics_or_ur3e=0, interval=100, verbose=True, paras=[]):
     all_users = ["u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8"]
 
-    test_data = []
-    test_classes = []
-    task_classes = []
+    test_data = {t: [] for t in tasks_to_train}
+    test_classes = {t: [] for t in tasks_to_train}
+    task_classes = {t: [] for t in tasks_to_train}
     t = 0
     tot_time = 0
     for task in tasks_to_train:
@@ -28,9 +28,9 @@ def train(methods, train_user, tasks_to_train, haptics_or_ur3e=0, interval=100, 
             train, test = extract(u, task, haptics_or_ur3e, interval=interval)
             train_data.extend(train)
             train_classes.extend([0 for _ in train] if u == train_user else [1 for _ in train])
-            test_data.extend(test)
-            test_classes.extend([0 for _ in test] if u == train_user else [1 for _ in test])
-            task_classes.extend([t for _ in test])
+            test_data[task].extend(test)
+            test_classes[task].extend([0 for _ in test] if u == train_user else [1 for _ in test])
+            task_classes[task].extend([t for _ in test])
         t += 1
 
         for method in methods:
@@ -66,43 +66,53 @@ def test(user, method, test_data, test_classes, task_classes, haptics_or_ur3e=0,
     tasks = ["abc", "cir", "star", "www", "xyz"]
     name = "ur3e" if haptics_or_ur3e else "haptics"
     task_model = load("{m}_task_model_{h}.joblib".format(m=method, h=name))
+
+    user_probs = []
     user_predictions = []
     task_predictions = []
-    user_probs = []
+    real_user = []
+    real_task = []
 
     tot_time = 0
 
-    for i in range(len(test_data)):
-        t1 = time.time()
-        if true_task:
-            predicted_task = task_classes[i]
-        else:
-            predicted_task = task_model.predict([test_data[i]])[0]
 
-        user_model = load(
-            "models/{m}/{t}/{m}_{u}_{t}_{h}.joblib".format(m=method, t=tasks[predicted_task], u=user, h=name))
+    for task in test_data:
+        task_counts = {t: 0 for t in range(len(tasks))}
 
-        current_prediction = user_model.predict([test_data[i]])[0]
+        for i in range(len(test_data[task])):
+            t1 = time.time()
+            if true_task:
+                predicted_task = task_classes[task][i]
+            else:
+                task_counts[task_model.predict([test_data[task][i]])[0]] += 1
+                predicted_task = max(task_counts, key=task_counts.get)
 
-        t2 = time.time()
-        tot_time += (t2 - t1)
+            user_model = load(
+                "models/{m}/{t}/{m}_{u}_{t}_{h}.joblib".format(m=method, t=tasks[predicted_task], u=user, h=name))
 
-        task_predictions.append(predicted_task)
-        user_predictions.append(current_prediction)
-        if metrics:
-            pass  # user_probs.append(user_model.predict_proba(test_data))
+            current_prediction = user_model.predict([test_data[task][i]])[0]
 
-    user_accuracy = accuracy_score(user_predictions, test_classes)
-    task_accuracy = accuracy_score(task_predictions, task_classes)
+            t2 = time.time()
+            tot_time += (t2 - t1)
+
+            task_predictions.append(predicted_task)
+            user_predictions.append(current_prediction)
+            real_user.append(test_classes[task][i])
+            real_task.append(task_classes[task][i])
+
+
+
+    user_accuracy = accuracy_score(user_predictions, real_user)
+    task_accuracy = accuracy_score(task_predictions, real_task)
     avr_pred_time = tot_time / len(test_data)
 
     if metrics:
         # user_probs_avg = np.mean(user_probs, axis=0)
-        user_confusion_matrix = confusion_matrix(test_classes, user_predictions)
-        task_confusion_matrix = confusion_matrix(task_classes, task_predictions)
+        user_confusion_matrix = confusion_matrix(real_user, user_predictions)
+        task_confusion_matrix = confusion_matrix(real_task, task_predictions)
         user_auc_score = 0  # roc_auc_score(test_classes, user_probs_avg[:, 0])
-        task_f1 = f1_score(task_classes, task_predictions, average='weighted')
-        user_f1 = f1_score(test_classes, user_predictions)
+        task_f1 = f1_score(real_task, task_predictions, average='weighted')
+        user_f1 = f1_score(real_user, user_predictions)
 
     if verbose:
         print("Testing points:", len(test_data))
