@@ -11,7 +11,7 @@ import numpy as np
 intervals = [100]
 
 
-def train(methods, train_user, tasks_to_train, haptics_or_ur3e=0, interval=100, verbose=True):
+def train(methods, train_user, tasks_to_train, haptics_or_ur3e=0, interval=100, verbose=True, paras=[]):
     all_users = ["u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8"]
 
     test_data = []
@@ -39,9 +39,9 @@ def train(methods, train_user, tasks_to_train, haptics_or_ur3e=0, interval=100, 
             if method == "svm":
                 model = SVC(probability=True, kernel='rbf', gamma='auto')
             elif method == "rf":
-                model = RandomForestClassifier(n_estimators=100, criterion="entropy", max_features="log2")
+                model = RandomForestClassifier(n_estimators=100, criterion="entropy", max_features=None)
             elif method == "knn":
-                model = KNeighborsClassifier(weights="uniform", n_neighbors=15, algorithm="auto", p=1)
+                model = KNeighborsClassifier(weights="uniform", n_neighbors=85, algorithm="auto", p=1)
             elif method == "dt":
                 model = DecisionTreeClassifier(criterion="entropy", max_features=None, splitter="best")
             else:

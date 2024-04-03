@@ -1,124 +1,790 @@
-HAPTICS
+i=50
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 svm
-Task Model Train Time: 1.0884768962860107
-User Models Average Train Time: 8.974607971082558e-05
-User Prediction Accuracy: 0.8745136186770428
-Task Prediction Accuracy: 0.2308690012970169
-Average Prediction Time: 0.0007767857435303129
-Average User Log Loss Score: 0.3955799320038953
-Average Task Log Loss Score: 1.5737498348311543
-User Confusion Matrix Score: 0.8745136186770428
-Task Confusion Matrix Score: 0.23086900129701687
-User AUC Score: 0.6275177198248467
-User F1 Score: 0.9326138322103127
-Task F1 Score: 0.3694185365995375
+Task Model Train Time: 19.40128993988037
+User Confusion Matrix: [[  218.  6295.]
+ [  215. 45376.]]
+Task Confusion Matrix: [[ 1128.  9472.     0.     0.   144.]
+ [ 1072. 10960.     0.     0.   104.]
+ [ 1200.  8888.     0.     0.   192.]
+ [ 1088.  8240.     0.     0.   144.]
+ [ 1328.  7944.     0.     0.   200.]]
+User Models Average Train Time: 0.0026007393309547657
+User Prediction Accuracy: 0.8750575771533855
+Task Prediction Accuracy: 0.23583602026715805
+Average Prediction Time: 0.0015301551620073989
+User Confusion Matrix Score: 0.8750575771533855
+Task Confusion Matrix Score: 0.235836020267158
+User AUC Score: 0.0
+User F1 Score: 0.9326004786806242
+Task F1 Score: 0.1237585473188347
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 rf
-Task Model Train Time: 0.7032132148742676
-User Models Average Train Time: 0.0008495104065510395
-User Prediction Accuracy: 0.9014267185473412
-Task Prediction Accuracy: 0.603112840466926
-Average Prediction Time: 0.023232467366254436
-Average User Log Loss Score: 0.30779055099160063
-Average Task Log Loss Score: 1.1367941375165478
-User Confusion Matrix Score: 0.9014267185473411
-Task Confusion Matrix Score: 0.603112840466926
-User AUC Score: 0.8013787795122447
-User F1 Score: 0.9457847472682411
-Task F1 Score: 0.6056243758287271
+Task Model Train Time: 14.832723140716553
+User Confusion Matrix: [[ 3453.  3060.]
+ [ 1357. 44234.]]
+Task Confusion Matrix: [[6384. 1256.  944.  624. 1536.]
+ [ 744. 9032. 1096.  472.  792.]
+ [1240.  992. 6712.  608.  728.]
+ [ 472.  776.  448. 6752. 1024.]
+ [1080.  816.  928.  784. 5864.]]
+User Models Average Train Time: 0.0028560203139031152
+User Prediction Accuracy: 0.9152272378320281
+Task Prediction Accuracy: 0.6668202057423614
+Average Prediction Time: 0.023941025634377888
+User Confusion Matrix Score: 0.9152272378320283
+Task Confusion Matrix Score: 0.6668202057423614
+User AUC Score: 0.0
+User F1 Score: 0.9521215518163463
+Task F1 Score: 0.6664345333354583
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 knn
-Task Model Train Time: 0.002162933349609375
-User Models Average Train Time: 4.558982243024577e-06
-User Prediction Accuracy: 0.8513294422827495
-Task Prediction Accuracy: 0.34370946822308696
-Average Prediction Time: 0.0015442621073988782
-Average User Log Loss Score: 0.6853507501143049
-Average Task Log Loss Score: 10.512816108282047
-User Confusion Matrix Score: 0.8513294422827496
-Task Confusion Matrix Score: 0.3437094682230869
-User AUC Score: 0.6305804404044989
-User F1 Score: 0.9177998344895787
-Task F1 Score: 0.35410768847951596
+Task Model Train Time: 0.01551055908203125
+User Confusion Matrix: [[  241.  6272.]
+ [  155. 45436.]]
+Task Confusion Matrix: [[2928. 3040. 1944. 1392. 1440.]
+ [1264. 7040. 1656. 1080. 1096.]
+ [2008. 1968. 3624. 1376. 1304.]
+ [1280. 1792. 1552. 3632. 1216.]
+ [1504. 2216. 1992. 1480. 2280.]]
+User Models Average Train Time: 2.7303512279803936e-06
+User Prediction Accuracy: 0.8766505450637188
+Task Prediction Accuracy: 0.37432826654383533
+Average Prediction Time: 0.0012503829297795376
+User Confusion Matrix Score: 0.8766505450637188
+Task Confusion Matrix Score: 0.3743282665438354
+User AUC Score: 0.0
+User F1 Score: 0.9334865115713433
+Task F1 Score: 0.3664390975809914
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 dt
-Task Model Train Time: 0.04030323028564453
-User Models Average Train Time: 3.1842100017265585e-05
-User Prediction Accuracy: 0.8399805447470816
-Task Prediction Accuracy: 0.424124513618677
-Average Prediction Time: 0.0005063756276042854
-Average User Log Loss Score: 1.1582592482133582
-Average Task Log Loss Score: 19.21274074648772
-User Confusion Matrix Score: 0.8399805447470817
-Task Confusion Matrix Score: 0.42412451361867703
-User AUC Score: 0.7282741512981952
-User F1 Score: 0.9078379702766116
-Task F1 Score: 0.4249980287140414
+Task Model Train Time: 0.6397182941436768
+User Confusion Matrix: [[ 3106.  3407.]
+ [ 3099. 42492.]]
+Task Confusion Matrix: [[4736. 1376. 1520. 1072. 2040.]
+ [1584. 7032. 1344.  992. 1184.]
+ [1592. 1344. 4848. 1168. 1328.]
+ [1000.  944.  984. 5464. 1080.]
+ [1512. 1256. 1648. 1152. 3904.]]
+User Models Average Train Time: 4.7822660625978445e-05
+User Prediction Accuracy: 0.8751343466912329
+Task Prediction Accuracy: 0.4986949178565946
+Average Prediction Time: 0.0004939608277034305
+User Confusion Matrix Score: 0.8751343466912329
+Task Confusion Matrix Score: 0.4986949178565945
+User AUC Score: 0.0
+User F1 Score: 0.9280476156235175
+Task F1 Score: 0.49851800604896296
 
 =======================================================
-UR3E
+i=100
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 svm
-Task Model Train Time: 21.857088327407837
-User Models Average Train Time: 0.00022481958120327276
-User Prediction Accuracy: 0.8748845443349753
-Task Prediction Accuracy: 0.2364532019704433
-Average Prediction Time: 0.0011366122755511055
-Average User Log Loss Score: 0.37143040428861474
-Average Task Log Loss Score: 1.6046019494627919
-User Confusion Matrix Score: 0.8748845443349754
-Task Confusion Matrix Score: 0.23645320197044334
-User AUC Score: 0.501397651146121
-User F1 Score: 0.9328807585118554
-Task F1 Score: 0.36925652213787913
+Task Model Train Time: 4.332898378372192
+User Confusion Matrix: [[  134.  3114.]
+ [   89. 22647.]]
+Task Confusion Matrix: [[ 600. 4696.    0.    0.   64.]
+ [ 536. 5472.    0.    0.   40.]
+ [ 632. 4384.    0.    0.  112.]
+ [ 536. 4120.    0.    0.   72.]
+ [ 680. 3928.    0.    0.  112.]]
+User Models Average Train Time: 0.001133274222756254
+User Prediction Accuracy: 0.8767318349753696
+Task Prediction Accuracy: 0.23799261083743842
+Average Prediction Time: 0.0010837875673629968
+User Confusion Matrix Score: 0.8767318349753694
+Task Confusion Matrix Score: 0.23799261083743842
+User AUC Score: 0.0
+User F1 Score: 0.9335144769858084
+Task F1 Score: 0.1265312217041761
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 rf
-Task Model Train Time: 4.381556987762451
-User Models Average Train Time: 0.0007574691028870973
-User Prediction Accuracy: 0.9201816502463054
-Task Prediction Accuracy: 0.6511699507389163
-Average Prediction Time: 0.024350031017523095
-Average User Log Loss Score: 0.2604616704476752
-Average Task Log Loss Score: 1.022630811054971
-User Confusion Matrix Score: 0.9201816502463054
-Task Confusion Matrix Score: 0.6511699507389163
-User AUC Score: 0.8872972396780763
-User F1 Score: 0.9554041594419336
-Task F1 Score: 0.6517419008992394
+Task Model Train Time: 6.689830780029297
+User Confusion Matrix: [[ 1682.  1566.]
+ [  618. 22118.]]
+Task Confusion Matrix: [[3016.  720.  512.  320.  792.]
+ [ 448. 4552.  528.  192.  328.]
+ [ 600.  552. 3216.  256.  504.]
+ [ 232.  448.  248. 3312.  488.]
+ [ 536.  352.  584.  408. 2840.]]
+User Models Average Train Time: 0.0025397566390301793
+User Prediction Accuracy: 0.915948275862069
+Task Prediction Accuracy: 0.6517857142857143
+Average Prediction Time: 0.023605933816635546
+User Confusion Matrix Score: 0.915948275862069
+Task Confusion Matrix Score: 0.6517857142857143
+User AUC Score: 0.0
+User F1 Score: 0.9525390372956961
+Task F1 Score: 0.6510181421013034
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 knn
-Task Model Train Time: 0.007563114166259766
-User Models Average Train Time: 3.0456725599730545e-06
-User Prediction Accuracy: 0.8609144088669951
-Task Prediction Accuracy: 0.33466748768472904
-Average Prediction Time: 0.0015176532083544239
-Average User Log Loss Score: 0.5330341083850479
-Average Task Log Loss Score: 9.813564033744761
-User Confusion Matrix Score: 0.8609144088669951
-Task Confusion Matrix Score: 0.33466748768472904
-User AUC Score: 0.6655975952372055
-User F1 Score: 0.9226847407609383
-Task F1 Score: 0.3407747161607681
+Task Model Train Time: 0.007879257202148438
+User Confusion Matrix: [[   63.  3185.]
+ [   33. 22703.]]
+Task Confusion Matrix: [[1488. 1328. 1128.  600.  816.]
+ [ 688. 3704.  656.  416.  584.]
+ [ 864. 1048. 1912.  672.  632.]
+ [ 688.  712.  856. 2008.  464.]
+ [ 744.  936.  984.  744. 1312.]]
+User Models Average Train Time: 3.252747317253075e-06
+User Prediction Accuracy: 0.8761545566502463
+Task Prediction Accuracy: 0.4011699507389163
+Average Prediction Time: 0.0011534095819800945
+User Confusion Matrix Score: 0.8761545566502463
+Task Confusion Matrix Score: 0.40116995073891626
+User AUC Score: 0.0
+User F1 Score: 0.9333923916615278
+Task F1 Score: 0.39397008966923014
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 dt
-Task Model Train Time: 0.2905540466308594
-User Models Average Train Time: 4.330195780164502e-05
-User Prediction Accuracy: 0.86876539408867
-Task Prediction Accuracy: 0.4981527093596059
-Average Prediction Time: 0.0005104383040825135
-Average User Log Loss Score: 0.9234902012886068
-Average Task Log Loss Score: 18.088409798109897
-User Confusion Matrix Score: 0.8687653940886699
-Task Confusion Matrix Score: 0.4981527093596059
-User AUC Score: 0.8014008433594707
-User F1 Score: 0.9241677361687509
-Task F1 Score: 0.4985412160480057
+Task Model Train Time: 0.28886890411376953
+User Confusion Matrix: [[ 1540.  1708.]
+ [ 1664. 21072.]]
+Task Confusion Matrix: [[2264.  840.  856.  488.  912.]
+ [ 728. 3608.  800.  472.  440.]
+ [ 776.  808. 2176.  608.  760.]
+ [ 408.  496.  544. 2520.  760.]
+ [ 752.  520.  768.  616. 2064.]]
+User Models Average Train Time: 4.387873550647585e-05
+User Prediction Accuracy: 0.8702278325123152
+Task Prediction Accuracy: 0.4861453201970444
+Average Prediction Time: 0.0004880051197383204
+User Confusion Matrix Score: 0.8702278325123153
+Task Confusion Matrix Score: 0.4861453201970443
+User AUC Score: 0.0
+User F1 Score: 0.9251239417524653
+Task F1 Score: 0.4856188042096453
+
+=======================================================
+i=150
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+svm
+Task Model Train Time: 1.987457036972046
+User Confusion Matrix: [[  112.  2052.]
+ [   72. 15076.]]
+Task Confusion Matrix: [[  16. 3552.    0.    0.    0.]
+ [  32. 4000.    0.    0.    0.]
+ [  56. 3360.    0.    0.    0.]
+ [  48. 3104.    0.    0.    0.]
+ [  88. 3056.    0.    0.    0.]]
+User Models Average Train Time: 0.0007019749052423205
+User Prediction Accuracy: 0.8773105360443623
+Task Prediction Accuracy: 0.2319778188539741
+Average Prediction Time: 0.0009461297978975857
+User Confusion Matrix Score: 0.8773105360443623
+Task Confusion Matrix Score: 0.23197781885397412
+User AUC Score: 0.0
+User F1 Score: 0.9337454250552175
+Task F1 Score: 0.09001928272538731
+
+rf
+Task Model Train Time: 4.267899751663208
+User Confusion Matrix: [[ 1092.  1072.]
+ [  396. 14752.]]
+Task Confusion Matrix: [[1928.  488.  360.  272.  520.]
+ [ 304. 3000.  344.  152.  232.]
+ [ 336.  400. 2104.  216.  360.]
+ [ 192.  336.  112. 2176.  336.]
+ [ 328.  344.  416.  208. 1848.]]
+User Models Average Train Time: 0.002415051150123646
+User Prediction Accuracy: 0.915203327171904
+Task Prediction Accuracy: 0.6386321626617376
+Average Prediction Time: 0.023060133725459828
+User Confusion Matrix Score: 0.9152033271719039
+Task Confusion Matrix Score: 0.6386321626617375
+User AUC Score: 0.0
+User F1 Score: 0.952284832480773
+Task F1 Score: 0.6373886137705943
+
+knn
+Task Model Train Time: 0.005393266677856445
+User Confusion Matrix: [[8.0000e+00 2.1560e+03]
+ [4.0000e+00 1.5144e+04]]
+Task Confusion Matrix: [[1064.  856.  656.  536.  456.]
+ [ 408. 2568.  400.  312.  344.]
+ [ 616.  544. 1352.  480.  424.]
+ [ 520.  392.  400. 1544.  296.]
+ [ 576.  616.  672.  496.  784.]]
+User Models Average Train Time: 3.6465978446156614e-06
+User Prediction Accuracy: 0.8752310536044363
+Task Prediction Accuracy: 0.42236598890942695
+Average Prediction Time: 0.0011731810909102012
+User Confusion Matrix Score: 0.8752310536044362
+Task Confusion Matrix Score: 0.422365988909427
+User AUC Score: 0.0
+User F1 Score: 0.9330362106457819
+Task F1 Score: 0.4136193951379808
+
+dt
+Task Model Train Time: 0.17621970176696777
+User Confusion Matrix: [[ 1017.  1147.]
+ [ 1136. 14012.]]
+Task Confusion Matrix: [[1440.  600.  576.  304.  648.]
+ [ 552. 2232.  424.  392.  432.]
+ [ 680.  304. 1488.  400.  544.]
+ [ 304.  448.  368. 1568.  464.]
+ [ 616.  384.  464.  280. 1400.]]
+User Models Average Train Time: 4.098488641093707e-05
+User Prediction Accuracy: 0.8681261552680223
+Task Prediction Accuracy: 0.4695009242144178
+Average Prediction Time: 0.0004840891209195149
+User Confusion Matrix Score: 0.8681261552680222
+Task Confusion Matrix Score: 0.46950092421441775
+User AUC Score: 0.0
+User F1 Score: 0.9239257611614486
+Task F1 Score: 0.4703742800337706
+
+=======================================================
+i=200
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+svm
+Task Model Train Time: 1.0227560997009277
+User Confusion Matrix: [[   77.  1543.]
+ [   87. 11253.]]
+Task Confusion Matrix: [[   0. 2664.    0.    0.    0.]
+ [   0. 3024.    0.    0.    8.]
+ [   0. 2528.    0.    0.   24.]
+ [   0. 2344.    0.    0.    8.]
+ [   0. 2336.    0.    0.   24.]]
+User Models Average Train Time: 0.0004913326766755846
+User Prediction Accuracy: 0.8742283950617284
+Task Prediction Accuracy: 0.2351851851851852
+Average Prediction Time: 0.0008698675735497181
+User Confusion Matrix Score: 0.8742283950617284
+Task Confusion Matrix Score: 0.2351851851851852
+User AUC Score: 0.0
+User F1 Score: 0.9319280216283481
+Task F1 Score: 0.09243899835041823
+
+rf
+Task Model Train Time: 3.0413055419921875
+User Confusion Matrix: [[  758.   862.]
+ [  318. 11022.]]
+Task Confusion Matrix: [[1464.  368.  272.  184.  376.]
+ [ 280. 2200.  184.  168.  200.]
+ [ 304.  208. 1536.  248.  256.]
+ [ 224.  200.   88. 1552.  288.]
+ [ 272.  272.  272.  224. 1320.]]
+User Models Average Train Time: 0.00230549152618573
+User Prediction Accuracy: 0.9089506172839507
+Task Prediction Accuracy: 0.6228395061728395
+Average Prediction Time: 0.022979849301002643
+User Confusion Matrix Score: 0.9089506172839507
+Task Confusion Matrix Score: 0.6228395061728395
+User AUC Score: 0.0
+User F1 Score: 0.9487685898369226
+Task F1 Score: 0.6221318284811853
+
+knn
+Task Model Train Time: 0.004273891448974609
+User Confusion Matrix: [[5.0000e+00 1.6150e+03]
+ [5.0000e+00 1.1335e+04]]
+Task Confusion Matrix: [[ 752.  656.  568.  368.  320.]
+ [ 392. 1888.  280.  272.  200.]
+ [ 536.  504.  864.  368.  280.]
+ [ 344.  320.  296. 1040.  352.]
+ [ 408.  608.  400.  320.  624.]]
+User Models Average Train Time: 4.053005465754756e-06
+User Prediction Accuracy: 0.875
+Task Prediction Accuracy: 0.39876543209876536
+Average Prediction Time: 0.0012240468719859183
+User Confusion Matrix Score: 0.875
+Task Confusion Matrix Score: 0.3987654320987654
+User AUC Score: 0.0
+User F1 Score: 0.9328962001469365
+Task F1 Score: 0.3902455716479429
+
+dt
+Task Model Train Time: 0.12187075614929199
+User Confusion Matrix: [[  729.   891.]
+ [  932. 10408.]]
+Task Confusion Matrix: [[1032.  400.  496.  312.  424.]
+ [ 272. 1496.  440.  376.  448.]
+ [ 352.  408. 1088.  304.  400.]
+ [ 240.  232.  288. 1216.  376.]
+ [ 416.  320.  288.  312. 1024.]]
+User Models Average Train Time: 4.0005037078150995e-05
+User Prediction Accuracy: 0.8593364197530865
+Task Prediction Accuracy: 0.4518518518518518
+Average Prediction Time: 0.00048342588139169016
+User Confusion Matrix Score: 0.8593364197530864
+Task Confusion Matrix Score: 0.45185185185185184
+User AUC Score: 0.0
+User F1 Score: 0.9186078795387571
+Task F1 Score: 0.45201864740209075
+
+=======================================================
+i=250
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+svm
+Task Model Train Time: 0.6588349342346191
+User Confusion Matrix: [[  91. 1203.]
+ [  65. 8993.]]
+Task Confusion Matrix: [[   0. 2128.    0.    0.    0.]
+ [   0. 2416.    0.    0.    0.]
+ [   0. 2032.    0.    0.    8.]
+ [   0. 1880.    0.    0.    8.]
+ [   0. 1872.    0.    0.    8.]]
+User Models Average Train Time: 0.0003727609997002014
+User Prediction Accuracy: 0.8775115919629056
+Task Prediction Accuracy: 0.2341576506955178
+Average Prediction Time: 0.0008232244844598785
+User Confusion Matrix Score: 0.8775115919629057
+Task Confusion Matrix Score: 0.23415765069551778
+User AUC Score: 0.0
+User F1 Score: 0.9336520585270335
+Task F1 Score: 0.09001603825863658
+
+rf
+Task Model Train Time: 2.391995429992676
+User Confusion Matrix: [[ 603.  691.]
+ [ 248. 8810.]]
+Task Confusion Matrix: [[1136.  352.  224.  136.  280.]
+ [ 192. 1704.  248.  104.  168.]
+ [ 208.  184. 1312.  160.  176.]
+ [ 144.  184.   88. 1272.  200.]
+ [ 208.  352.  192.  176.  952.]]
+User Models Average Train Time: 0.0022324533698363505
+User Prediction Accuracy: 0.9092928902627512
+Task Prediction Accuracy: 0.615919629057187
+Average Prediction Time: 0.02322942311004656
+User Confusion Matrix Score: 0.9092928902627512
+Task Confusion Matrix Score: 0.615919629057187
+User AUC Score: 0.0
+User F1 Score: 0.9489925939790141
+Task F1 Score: 0.6142547079345425
+
+knn
+Task Model Train Time: 0.003513336181640625
+User Confusion Matrix: [[1.000e+00 1.293e+03]
+ [0.000e+00 9.058e+03]]
+Task Confusion Matrix: [[ 640.  416.  480.  328.  264.]
+ [ 192. 1560.  256.  272.  136.]
+ [ 328.  320.  800.  336.  256.]
+ [ 264.  240.  248.  904.  232.]
+ [ 304.  480.  344.  192.  560.]]
+User Models Average Train Time: 4.374285385450219e-06
+User Prediction Accuracy: 0.8750965996908809
+Task Prediction Accuracy: 0.4312210200927357
+Average Prediction Time: 0.0012373492421101566
+User Confusion Matrix Score: 0.8750965996908809
+Task Confusion Matrix Score: 0.4312210200927357
+User AUC Score: 0.0
+User F1 Score: 0.9329922024030541
+Task F1 Score: 0.4231714999084781
+
+dt
+Task Model Train Time: 0.09590482711791992
+User Confusion Matrix: [[ 537.  757.]
+ [ 747. 8311.]]
+Task Confusion Matrix: [[ 792.  408.  384.  256.  288.]
+ [ 328. 1184.  296.  248.  360.]
+ [ 424.  264.  736.  256.  360.]
+ [ 272.  280.  256.  784.  296.]
+ [ 288.  384.  264.  336.  608.]]
+User Models Average Train Time: 3.6702458235727394e-05
+User Prediction Accuracy: 0.8547140649149924
+Task Prediction Accuracy: 0.39644513137557963
+Average Prediction Time: 0.00048063729977497184
+User Confusion Matrix Score: 0.8547140649149922
+Task Confusion Matrix Score: 0.3964451313755796
+User AUC Score: 0.0
+User F1 Score: 0.9161734668441903
+Task F1 Score: 0.3959940329286745
+
+=======================================================
+i=300
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+svm
+Task Model Train Time: 0.44146156311035156
+User Confusion Matrix: [[  75. 1002.]
+ [  68. 7471.]]
+Task Confusion Matrix: [[  16. 1768.    0.    0.    0.]
+ [  16. 1984.    0.    0.    0.]
+ [  24. 1680.    0.    0.    0.]
+ [  24. 1544.    0.    0.    0.]
+ [  48. 1512.    0.    0.    0.]]
+User Models Average Train Time: 0.000255402001165746
+User Prediction Accuracy: 0.8758124419684308
+Task Prediction Accuracy: 0.23212627669452182
+Average Prediction Time: 0.0007862664807584403
+User Confusion Matrix Score: 0.8758124419684308
+Task Confusion Matrix Score: 0.23212627669452182
+User AUC Score: 0.0
+User F1 Score: 0.9326800196101852
+Task F1 Score: 0.09128737639478943
+
+rf
+Task Model Train Time: 1.9221529960632324
+User Confusion Matrix: [[ 480.  597.]
+ [ 217. 7322.]]
+Task Confusion Matrix: [[ 936.  232.  248.  152.  216.]
+ [ 152. 1368.  224.  104.  152.]
+ [ 288.  176. 1008.  136.   96.]
+ [  64.  184.  160. 1008.  152.]
+ [ 200.  312.  160.  104.  784.]]
+User Models Average Train Time: 0.002150195444084033
+User Prediction Accuracy: 0.9055246053853296
+Task Prediction Accuracy: 0.5923862581244198
+Average Prediction Time: 0.02336507543105158
+User Confusion Matrix Score: 0.9055246053853296
+Task Confusion Matrix Score: 0.5923862581244197
+User AUC Score: 0.0
+User F1 Score: 0.9469845252926881
+Task F1 Score: 0.5909964371411346
+
+knn
+Task Model Train Time: 0.003028392791748047
+User Confusion Matrix: [[   0. 1077.]
+ [   0. 7539.]]
+Task Confusion Matrix: [[ 512.  440.  408.  232.  192.]
+ [ 264. 1240.  184.  176.  136.]
+ [ 448.  304.  608.  224.  120.]
+ [ 224.  264.  240.  608.  232.]
+ [ 240.  392.  256.  240.  432.]]
+User Models Average Train Time: 4.700493126305144e-06
+User Prediction Accuracy: 0.8749999999999999
+Task Prediction Accuracy: 0.39461467038068715
+Average Prediction Time: 0.0012514673678434437
+User Confusion Matrix Score: 0.875
+Task Confusion Matrix Score: 0.3946146703806871
+User AUC Score: 0.0
+User F1 Score: 0.9329413245030553
+Task F1 Score: 0.38701691399758037
+
+dt
+Task Model Train Time: 0.07487082481384277
+User Confusion Matrix: [[ 461.  616.]
+ [ 630. 6909.]]
+Task Confusion Matrix: [[ 648.  208.  368.  216.  344.]
+ [ 216. 1008.  312.  200.  264.]
+ [ 288.  224.  656.  216.  320.]
+ [ 184.  224.  136.  832.  192.]
+ [ 224.  200.  296.  240.  600.]]
+User Models Average Train Time: 3.6486786830834804e-05
+User Prediction Accuracy: 0.855385329619313
+Task Prediction Accuracy: 0.4345403899721449
+Average Prediction Time: 0.0004828177122684574
+User Confusion Matrix Score: 0.8553853296193129
+Task Confusion Matrix Score: 0.43454038997214484
+User AUC Score: 0.0
+User F1 Score: 0.9163294523226843
+Task F1 Score: 0.434881916639061
+
+=======================================================
+i=350
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+svm
+Task Model Train Time: 0.32788705825805664
+User Confusion Matrix: [[  59.  865.]
+ [  61. 6407.]]
+Task Confusion Matrix: [[   0. 1512.    0.    0.    0.]
+ [   0. 1728.    0.    0.    0.]
+ [   0. 1464.    0.    0.    0.]
+ [   0. 1336.    0.    0.    8.]
+ [   0. 1320.    8.    0.   16.]]
+User Models Average Train Time: 0.00018955651041749238
+User Prediction Accuracy: 0.8747294372294373
+Task Prediction Accuracy: 0.2359307359307359
+Average Prediction Time: 0.00077201116394687
+User Confusion Matrix Score: 0.8747294372294372
+Task Confusion Matrix Score: 0.23593073593073594
+User AUC Score: 0.0
+User F1 Score: 0.9320665701866875
+Task F1 Score: 0.0931500753591191
+
+rf
+Task Model Train Time: 1.605987548828125
+User Confusion Matrix: [[ 394.  530.]
+ [ 181. 6287.]]
+Task Confusion Matrix: [[ 776.  200.  224.   88.  224.]
+ [ 144. 1200.  136.  144.  104.]
+ [ 200.  240.  784.  104.  136.]
+ [  88.  192.   64.  896.  104.]
+ [ 232.  256.  176.  112.  568.]]
+User Models Average Train Time: 0.002132546269532406
+User Prediction Accuracy: 0.9038149350649349
+Task Prediction Accuracy: 0.5714285714285713
+Average Prediction Time: 0.02310769421197635
+User Confusion Matrix Score: 0.903814935064935
+Task Confusion Matrix Score: 0.5714285714285714
+User AUC Score: 0.0
+User F1 Score: 0.9460224544225858
+Task F1 Score: 0.5680980064510299
+
+knn
+Task Model Train Time: 0.002772092819213867
+User Confusion Matrix: [[   0.  924.]
+ [   0. 6468.]]
+Task Confusion Matrix: [[ 336.  424.  368.  184.  200.]
+ [ 168. 1112.  208.  128.  112.]
+ [ 232.  272.  472.  256.  232.]
+ [ 144.  240.  240.  552.  168.]
+ [ 240.  304.  320.  160.  320.]]
+User Models Average Train Time: 5.083682733180719e-06
+User Prediction Accuracy: 0.875
+Task Prediction Accuracy: 0.3777056277056277
+Average Prediction Time: 0.00126254145717208
+User Confusion Matrix Score: 0.875
+Task Confusion Matrix Score: 0.3777056277056277
+User AUC Score: 0.0
+User F1 Score: 0.9329275398753768
+Task F1 Score: 0.36598086872437013
+
+dt
+Task Model Train Time: 0.0640261173248291
+User Confusion Matrix: [[ 397.  527.]
+ [ 552. 5916.]]
+Task Confusion Matrix: [[592. 248. 216. 136. 320.]
+ [248. 792. 208. 232. 248.]
+ [360. 208. 496. 168. 232.]
+ [128. 264. 184. 568. 200.]
+ [240. 192. 192. 208. 512.]]
+User Models Average Train Time: 3.556416922317439e-05
+User Prediction Accuracy: 0.8540313852813853
+Task Prediction Accuracy: 0.4004329004329005
+Average Prediction Time: 0.0004893834198708143
+User Confusion Matrix Score: 0.8540313852813853
+Task Confusion Matrix Score: 0.4004329004329004
+User AUC Score: 0.0
+User F1 Score: 0.9155472384176713
+Task F1 Score: 0.4006617770505687
+
+=======================================================
+i=400
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+svm
+Task Model Train Time: 0.2510397434234619
+User Confusion Matrix: [[  51.  758.]
+ [  40. 5623.]]
+Task Confusion Matrix: [[  16. 1320.    0.    0.    0.]
+ [   0. 1520.    0.    0.    0.]
+ [  16. 1256.    0.    0.    0.]
+ [  24. 1144.    0.    0.    0.]
+ [  16. 1152.    0.    0.    8.]]
+User Models Average Train Time: 0.00015008932138402915
+User Prediction Accuracy: 0.8766996291718172
+Task Prediction Accuracy: 0.23856613102595794
+Average Prediction Time: 0.0007548202174555681
+User Confusion Matrix Score: 0.8766996291718171
+Task Confusion Matrix Score: 0.23856613102595797
+User AUC Score: 0.0
+User F1 Score: 0.9333053267423612
+Task F1 Score: 0.09738562966499188
+
+rf
+Task Model Train Time: 1.3686542510986328
+User Confusion Matrix: [[ 348.  461.]
+ [ 149. 5514.]]
+Task Confusion Matrix: [[ 736.  192.  128.  104.  176.]
+ [ 152. 1040.  144.   88.   96.]
+ [ 144.  200.  752.   96.   80.]
+ [  72.  112.  112.  728.  144.]
+ [ 192.  240.  136.  160.  448.]]
+User Models Average Train Time: 0.0020863460227202426
+User Prediction Accuracy: 0.9057478368355995
+Task Prediction Accuracy: 0.5723114956736711
+Average Prediction Time: 0.022867965094091273
+User Confusion Matrix Score: 0.9057478368355995
+Task Confusion Matrix Score: 0.5723114956736712
+User AUC Score: 0.0
+User F1 Score: 0.9471799960336604
+Task F1 Score: 0.5683912098551781
+
+knn
+Task Model Train Time: 0.002526998519897461
+User Confusion Matrix: [[   0.  809.]
+ [   0. 5663.]]
+Task Confusion Matrix: [[336. 248. 352. 240. 160.]
+ [240. 824. 192. 112. 152.]
+ [184. 264. 544. 176. 104.]
+ [112. 184. 208. 560. 104.]
+ [224. 192. 320. 176. 264.]]
+User Models Average Train Time: 5.357455558918316e-06
+User Prediction Accuracy: 0.875
+Task Prediction Accuracy: 0.39060568603213847
+Average Prediction Time: 0.0012810711733932398
+User Confusion Matrix Score: 0.875
+Task Confusion Matrix Score: 0.39060568603213847
+User AUC Score: 0.0
+User F1 Score: 0.9329386406128245
+Task F1 Score: 0.38289622258898715
+
+dt
+Task Model Train Time: 0.049360036849975586
+User Confusion Matrix: [[ 333.  476.]
+ [ 465. 5198.]]
+Task Confusion Matrix: [[552. 248. 168. 144. 224.]
+ [240. 816. 136. 160. 168.]
+ [200. 200. 488. 208. 176.]
+ [144. 184.  88. 544. 208.]
+ [168. 240. 232. 160. 376.]]
+User Models Average Train Time: 3.528727589195826e-05
+User Prediction Accuracy: 0.8546044499381953
+Task Prediction Accuracy: 0.4289245982694685
+Average Prediction Time: 0.0004820905819222129
+User Confusion Matrix Score: 0.8546044499381953
+Task Confusion Matrix Score: 0.4289245982694685
+User AUC Score: 0.0
+User F1 Score: 0.9161809209232916
+Task F1 Score: 0.42732272688296197
+
+=======================================================
+i=450
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+svm
+Task Model Train Time: 0.19956731796264648
+User Confusion Matrix: [[  46.  668.]
+ [  50. 4948.]]
+Task Confusion Matrix: [[   0. 1168.    0.    0.    0.]
+ [   0. 1336.    0.    0.    0.]
+ [   0. 1136.    0.    0.    0.]
+ [   0. 1016.    0.    0.   16.]
+ [   0. 1024.    0.    0.   16.]]
+User Models Average Train Time: 0.00012694090521302208
+User Prediction Accuracy: 0.8742997198879552
+Task Prediction Accuracy: 0.23669467787114848
+Average Prediction Time: 0.000741424639017976
+User Confusion Matrix Score: 0.8742997198879552
+Task Confusion Matrix Score: 0.23669467787114845
+User AUC Score: 0.0
+User F1 Score: 0.9318282114024318
+Task F1 Score: 0.09451191766892088
+
+rf
+Task Model Train Time: 1.2225654125213623
+User Confusion Matrix: [[ 321.  393.]
+ [ 129. 4869.]]
+Task Confusion Matrix: [[624. 168. 120.  56. 200.]
+ [176. 880.  96.  72. 112.]
+ [208. 192. 504. 112. 120.]
+ [ 48. 168.  64. 680.  72.]
+ [200. 216.  88.  80. 456.]]
+User Models Average Train Time: 0.0020738294144638444
+User Prediction Accuracy: 0.9086134453781514
+Task Prediction Accuracy: 0.5504201680672268
+Average Prediction Time: 0.022902820374117512
+User Confusion Matrix Score: 0.9086134453781513
+Task Confusion Matrix Score: 0.5504201680672269
+User AUC Score: 0.0
+User F1 Score: 0.9488007198110175
+Task F1 Score: 0.5481331447227483
+
+knn
+Task Model Train Time: 0.0023462772369384766
+User Confusion Matrix: [[   0.  714.]
+ [   0. 4998.]]
+Task Confusion Matrix: [[376. 320. 216. 192.  64.]
+ [224. 816. 104.  96.  96.]
+ [224. 208. 432. 152. 120.]
+ [160. 192. 160. 352. 168.]
+ [184. 224. 248. 136. 248.]]
+User Models Average Train Time: 5.7289747296929016e-06
+User Prediction Accuracy: 0.875
+Task Prediction Accuracy: 0.38935574229691877
+Average Prediction Time: 0.001280801135952733
+User Confusion Matrix Score: 0.875
+Task Confusion Matrix Score: 0.38935574229691877
+User AUC Score: 0.0
+User F1 Score: 0.932932544929854
+Task F1 Score: 0.38087408801405115
+
+dt
+Task Model Train Time: 0.05073666572570801
+User Confusion Matrix: [[ 307.  407.]
+ [ 404. 4594.]]
+Task Confusion Matrix: [[376. 216. 224. 136. 216.]
+ [144. 720. 144. 120. 208.]
+ [272. 160. 400. 144. 160.]
+ [120. 112. 136. 472. 192.]
+ [168. 160. 184. 112. 416.]]
+User Models Average Train Time: 3.3758184155162315e-05
+User Prediction Accuracy: 0.858018207282913
+Task Prediction Accuracy: 0.41736694677871145
+Average Prediction Time: 0.0004795664498785964
+User Confusion Matrix Score: 0.8580182072829131
+Task Confusion Matrix Score: 0.4173669467787115
+User AUC Score: 0.0
+User F1 Score: 0.9178816365118179
+Task F1 Score: 0.41697121687852334
+
+=======================================================
+i=500
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+svm
+Task Model Train Time: 0.15846753120422363
+User Confusion Matrix: [[  33.  611.]
+ [  40. 4468.]]
+Task Confusion Matrix: [[   0. 1056.    0.    0.    0.]
+ [   0. 1200.    0.    0.    0.]
+ [   0. 1024.    0.    0.    0.]
+ [   0.  936.    0.    0.    0.]
+ [   0.  936.    0.    0.    0.]]
+User Models Average Train Time: 0.00011130871239656248
+User Prediction Accuracy: 0.8736413043478262
+Task Prediction Accuracy: 0.23291925465838512
+Average Prediction Time: 0.0007299026532202775
+User Confusion Matrix Score: 0.873641304347826
+Task Confusion Matrix Score: 0.2329192546583851
+User AUC Score: 0.0
+User F1 Score: 0.9314957226011796
+Task F1 Score: 0.08800475616815556
+
+rf
+Task Model Train Time: 1.0367145538330078
+User Confusion Matrix: [[ 269.  375.]
+ [ 105. 4403.]]
+Task Confusion Matrix: [[536. 160.  88.  96. 176.]
+ [160. 768.  72.  72. 128.]
+ [160. 104. 576.  80. 104.]
+ [ 80. 152.  72. 584.  48.]
+ [128. 136.  96. 112. 464.]]
+User Models Average Train Time: 0.002024117556417951
+User Prediction Accuracy: 0.9068322981366459
+Task Prediction Accuracy: 0.5683229813664595
+Average Prediction Time: 0.02273592602762376
+User Confusion Matrix Score: 0.906832298136646
+Task Confusion Matrix Score: 0.5683229813664596
+User AUC Score: 0.0
+User F1 Score: 0.9478801142266579
+Task F1 Score: 0.5680845197870338
+
+knn
+Task Model Train Time: 0.0021560192108154297
+User Confusion Matrix: [[   0.  644.]
+ [   0. 4508.]]
+Task Confusion Matrix: [[320. 224. 224. 176. 112.]
+ [144. 632. 128. 112. 184.]
+ [184. 152. 392. 176. 120.]
+ [104. 136. 192. 440.  64.]
+ [136. 168. 184. 144. 304.]]
+User Models Average Train Time: 5.981335358590073e-06
+User Prediction Accuracy: 0.8750000000000001
+Task Prediction Accuracy: 0.40527950310559013
+Average Prediction Time: 0.0012741231862802684
+User Confusion Matrix Score: 0.875
+Task Confusion Matrix Score: 0.4052795031055901
+User AUC Score: 0.0
+User F1 Score: 0.932944762959269
+Task F1 Score: 0.4021642361867799
+
+dt
+Task Model Train Time: 0.0404355525970459
+User Confusion Matrix: [[ 268.  376.]
+ [ 383. 4125.]]
+Task Confusion Matrix: [[336. 224. 192. 128. 176.]
+ [216. 528. 168.  64. 224.]
+ [224. 152. 320. 152. 176.]
+ [168. 112. 104. 416. 136.]
+ [184. 136. 176. 168. 272.]]
+User Models Average Train Time: 3.235796408623642e-05
+User Prediction Accuracy: 0.8526785714285714
+Task Prediction Accuracy: 0.36335403726708076
+Average Prediction Time: 0.00048043430777069946
+User Confusion Matrix Score: 0.8526785714285714
+Task Confusion Matrix Score: 0.36335403726708076
+User AUC Score: 0.0
+User F1 Score: 0.9144546376610708
+Task F1 Score: 0.3643258104614988
 
 =======================================================
