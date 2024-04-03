@@ -3,6 +3,8 @@ from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score, log_loss, confusion_matrix, roc_auc_score, f1_score
+from tqdm import tqdm
+
 from feature_extraction import extract
 from joblib import dump, load
 import time
@@ -41,7 +43,7 @@ def train(methods, train_user, tasks_to_train, haptics_or_ur3e=0, interval=100, 
             elif method == "rf":
                 model = RandomForestClassifier(n_estimators=100, criterion="entropy", max_features=None)
             elif method == "knn":
-                model = KNeighborsClassifier(weights="uniform", n_neighbors=85, algorithm="auto", p=1)
+                model = KNeighborsClassifier(weights="uniform", n_neighbors=15, algorithm="auto", p=1)
             elif method == "dt":
                 model = DecisionTreeClassifier(criterion="entropy", max_features=None, splitter="best")
             else:
@@ -60,7 +62,7 @@ def train(methods, train_user, tasks_to_train, haptics_or_ur3e=0, interval=100, 
     return test_data, test_classes, task_classes, avr_time
 
 
-def test(user, method, test_data, test_classes, task_classes, haptics_or_ur3e=0, verbose=True, metrics=True):
+def test(user, method, test_data, test_classes, task_classes, haptics_or_ur3e=0, verbose=True, metrics=True, true_task=False):
     tasks = ["abc", "cir", "star", "www", "xyz"]
     name = "ur3e" if haptics_or_ur3e else "haptics"
     task_model = load("{m}_task_model_{h}.joblib".format(m=method, h=name))
@@ -72,7 +74,10 @@ def test(user, method, test_data, test_classes, task_classes, haptics_or_ur3e=0,
 
     for i in range(len(test_data)):
         t1 = time.time()
-        predicted_task = task_model.predict([test_data[i]])[0]
+        if true_task:
+            predicted_task = task_classes[i]
+        else:
+            predicted_task = task_model.predict([test_data[i]])[0]
 
         user_model = load(
             "models/{m}/{t}/{m}_{u}_{t}_{h}.joblib".format(m=method, t=tasks[predicted_task], u=user, h=name))
@@ -93,7 +98,6 @@ def test(user, method, test_data, test_classes, task_classes, haptics_or_ur3e=0,
 
     if metrics:
         # user_probs_avg = np.mean(user_probs, axis=0)
-
         user_confusion_matrix = confusion_matrix(test_classes, user_predictions)
         task_confusion_matrix = confusion_matrix(task_classes, task_predictions)
         user_auc_score = 0  # roc_auc_score(test_classes, user_probs_avg[:, 0])
@@ -114,7 +118,7 @@ def test(user, method, test_data, test_classes, task_classes, haptics_or_ur3e=0,
         return user_accuracy, task_accuracy, avr_pred_time
 
 
-def calc_auc(method, haptics_or_ur3e=0, interval=100, verbose=True, metrics=True):
+def calc_auc(method, haptics_or_ur3e=1, interval=100, verbose=True, metrics=True):
     all_users = ["u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8"]
     tasks = ["abc", "cir", "star", "www", "xyz"]
     auc_score_total = 0
@@ -135,5 +139,6 @@ def calc_auc(method, haptics_or_ur3e=0, interval=100, verbose=True, metrics=True
 
             user_probs = user_model.predict_proba(test_data)
             auc_score_total += roc_auc_score(test_classes, user_probs[:, 0])
+
 
     return auc_score_total / (len(all_users) * len(tasks))

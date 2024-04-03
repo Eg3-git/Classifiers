@@ -9,6 +9,9 @@ tasks = ["abc", "cir", "star", "www", "xyz"]
 crit = ["gini", "entropy", "log_loss"]
 feat = ["sqrt", "log2", None]
 
+ns = [0]#range(5, 151, 10)
+intervals = [50, 100, 150, 200, 250, 300, 350, 400, 450, 500]
+
 def test_svm():
 
 
@@ -16,27 +19,25 @@ def test_svm():
     train_times = []
     pred_times = []
 
-    for c in tqdm(crit):
-        for f in feat:
-            task_para = [c, f]
+    for i in tqdm(intervals):
 
-            task_model.train("rf", 1, verbose=False, paras=task_para)
+            task_model.train("knn", 1, verbose=False, interval=i)
 
-            for c2 in crit:
-                for f2 in feat:
+            for n2 in ns:
+
 
 
                     cm = np.zeros((2,2))
 
-                    user_para = [c2, f2]
+
                     for u in users:
 
 
-                        test_data, test_classes, task_classes, train_time = user_model.train(["rf"], u, tasks, 1,
-                                                                                    verbose=False, paras=user_para)
+                        test_data, test_classes, task_classes, train_time = user_model.train(["knn"], u, tasks, 1,
+                                                                                    verbose=False, interval=i)
 
                         user_accuracy, task_accuracy, pred_time, user_confusion_matrix, task_confusion_matrix, user_auc_score, task_f1, user_f1= user_model.test(
-                            u, "rf",
+                            u, "knn",
                             test_data,
                             test_classes,
                             task_classes,
@@ -45,9 +46,9 @@ def test_svm():
                         cm += user_confusion_matrix
 
 
-                    accs = cm[0,0] / len(users)
+                    accs = cm[0,0] / (cm[1,0] + cm[0,0])
 
 
-                    print(accs, c, f, c2, f2)
+                    print(accs, n2)
 
 test_svm()

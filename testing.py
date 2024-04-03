@@ -7,8 +7,8 @@ import user_model
 
 users = ["u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8"]
 intervals = [50, 100, 150, 200, 250, 300, 350, 400, 450, 500]
-# intervals = [400, 500]
-# methods = ["dt"]
+#intervals = [100, 200, 300, 400, 500]
+#methods = ["knn"]
 methods = ["svm", "rf", "knn", "dt"]
 methods_caps = [s.upper() for s in methods]
 tasks = ["abc", "cir", "star", "www", "xyz"]
@@ -22,7 +22,7 @@ def bulk_test():
         for m in methods:
 
             task_train_time = results[m][i]["Task Model Train Time"] = task_model.train(m, haptics_or_ur3e=1,
-                                                                                        interval=i, verbose=False)
+                                                                      interval=i, verbose=False)
 
             train_time_total = 0
             user_acc_total = 0
@@ -34,7 +34,6 @@ def bulk_test():
             task_confusion_matrix = np.zeros((5, 5))
             user_confusion_matrix = np.zeros((2, 2))
             for u in users:
-
                 test_data, test_classes, task_classes, train_time_one_user = user_model.train([m], u, tasks,
                                                                                               haptics_or_ur3e=1,
                                                                                               interval=i, verbose=False)
@@ -45,7 +44,7 @@ def bulk_test():
                     test_data,
                     test_classes,
                     task_classes,
-                    haptics_or_ur3e=1, verbose=False, metrics=True)
+                    haptics_or_ur3e=1, verbose=False, metrics=True, true_task=True)
 
                 user_acc_total += user_accuracy
                 task_acc_total += task_accuracy
@@ -174,5 +173,17 @@ def find_best_interval():
                 f"{m} The highest task accuracy was found at: {max(range(len(all_task_accuracies[m])), key=all_task_accuracies[m].__getitem__)}")
 
 
+def auc(m):
+    scores = []
+    for i in tqdm(intervals):
+        for u in users:
+            test_data, test_classes, task_classes, train_time_one_user = user_model.train([m], u, tasks,
+                                                                                          haptics_or_ur3e=1,
+                                                                                          interval=i, verbose=False)
+        scores.append(user_model.calc_auc(m, haptics_or_ur3e=1, interval=i))
+    print(scores)
+
+
 bulk_test()
+#auc("rf")
 # find_best_interval()
