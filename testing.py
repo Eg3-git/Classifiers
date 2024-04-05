@@ -12,17 +12,19 @@ intervals = [50, 100, 150, 200, 250, 300, 350, 400, 450, 500]
 methods = ["svm", "rf", "knn", "dt"]
 methods_caps = [s.upper() for s in methods]
 tasks = ["abc", "cir", "star", "www", "xyz"]
+use_task_model = "dt"
 
 
 def bulk_test():
     results = {m: {i: {} for i in intervals} for m in methods}
 
     for i in tqdm(intervals):
+        task_model.train(use_task_model, haptics_or_ur3e=1,
+                         interval=i, verbose=False)
 
         for m in methods:
 
-            task_train_time = results[m][i]["Task Model Train Time"] = task_model.train(m, haptics_or_ur3e=1,
-                                                                      interval=i, verbose=False)
+            task_train_time = results[m][i]["Task Model Train Time"] = 0
 
             train_time_total = 0
             user_acc_total = 0
@@ -44,7 +46,7 @@ def bulk_test():
                     test_data,
                     test_classes,
                     task_classes,
-                    haptics_or_ur3e=1, verbose=False, metrics=True, true_task=False)
+                    haptics_or_ur3e=1, verbose=False, metrics=True, true_task=False, use_task_model="dt")
 
                 user_acc_total += user_accuracy
                 task_acc_total += task_accuracy
@@ -107,23 +109,7 @@ def bulk_test():
             f.write("=======================================================\n")
 
 
-def plot_bar(x, ys, labels, x_label, y_label, title):
-    w = np.arrange(len(x))
-    bar_width = 0.25
-    colours = ["b", "g", "r", "y"]
 
-    for i in range(len(ys)):
-        plt.bar(w - bar_width, ys[i], width=bar_width, color=colours[i], align='center', label=labels[i])
-
-    # Adding labels, title, and legend
-    plt.xlabel(x_label)
-    plt.ylabel(y_label)
-    plt.title(title)
-    plt.xticks(w, x)
-    plt.legend()
-
-    # Display the plot
-    plt.show()
 
 
 def plot_line(x, ys, labels, x_label, y_label, title):

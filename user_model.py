@@ -62,10 +62,13 @@ def train(methods, train_user, tasks_to_train, haptics_or_ur3e=0, interval=100, 
     return test_data, test_classes, task_classes, avr_time
 
 
-def test(user, method, test_data, test_classes, task_classes, haptics_or_ur3e=0, verbose=True, metrics=True, true_task=False):
+def test(user, method, test_data, test_classes, task_classes, haptics_or_ur3e=0, verbose=True, metrics=True, true_task=False, use_task_model=None):
     tasks = ["abc", "cir", "star", "www", "xyz"]
     name = "ur3e" if haptics_or_ur3e else "haptics"
-    task_model = load("{m}_task_model_{h}.joblib".format(m=method, h=name))
+    if use_task_model is None:
+        task_model = load("{m}_task_model_{h}.joblib".format(m=method, h=name))
+    else:
+        task_model = load("{m}_task_model_{h}.joblib".format(m=use_task_model, h=name))
 
     user_probs = []
     user_predictions = []
@@ -77,7 +80,7 @@ def test(user, method, test_data, test_classes, task_classes, haptics_or_ur3e=0,
 
 
     for task in test_data:
-        task_counts = {t: 0 for t in range(len(tasks))}
+        task_counts = np.zeros((5,))
 
         for i in range(len(test_data[task])):
             t1 = time.time()
@@ -85,7 +88,7 @@ def test(user, method, test_data, test_classes, task_classes, haptics_or_ur3e=0,
                 predicted_task = task_classes[task][i]
             else:
                 task_counts[task_model.predict([test_data[task][i]])[0]] += 1
-                predicted_task = max(task_counts, key=task_counts.get)
+                predicted_task = task_counts.argmax()
 
             user_model = load(
                 "models/{m}/{t}/{m}_{u}_{t}_{h}.joblib".format(m=method, t=tasks[predicted_task], u=user, h=name))
