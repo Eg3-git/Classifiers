@@ -1,28 +1,43 @@
 import numpy as np
 from matplotlib import pyplot as plt
 from tqdm import tqdm
+from sklearn.metrics import roc_auc_score, f1_score
 
 import task_model
 import user_model
 
 users = ["u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8"]
-intervals = [50, 100, 150, 200, 250, 300, 350, 400, 450, 500]
-#intervals = [100, 200, 300, 400, 500]
-#methods = ["knn"]
+intervals = [5, 10, 25, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 650, 700, 750, 800, 850, 900, 950]
+# intervals = [100, 200, 300, 400, 500]
+# methods = ["knn"]
 methods = ["svm", "rf", "knn", "dt"]
 methods_caps = [s.upper() for s in methods]
 tasks = ["abc", "cir", "star", "www", "xyz"]
-use_task_model = "dt"
 
 
 def bulk_test():
+    print("General Metris")
+    metric_test()
+
+    print("RF Task")
+    metric_test(use_task_model="rf", f_name="rf_task")
+
+    print("DT Task")
+    metric_test(use_task_model="dt", f_name="dt_task")
+
+
+def metric_test(use_task_model=None, f_name="general"):
     results = {m: {i: {} for i in intervals} for m in methods}
 
     for i in tqdm(intervals):
-        task_model.train(use_task_model, haptics_or_ur3e=1,
-                         interval=i, verbose=False)
+        if use_task_model is not None:
+            task_model.train(use_task_model, haptics_or_ur3e=1,
+                             interval=i, verbose=False)
 
         for m in methods:
+            if use_task_model is None:
+                task_model.train(m, haptics_or_ur3e=1,
+                                 interval=i, verbose=False)
 
             task_train_time = results[m][i]["Task Model Train Time"] = 0
 
@@ -31,17 +46,19 @@ def bulk_test():
             task_acc_total = 0
             user_auc_total = 0
             pred_time_total = 0
-            user_f1_total = 0
-            task_f1_total = 0
+            pos_f1_total = []
+            neg_f1_total = []
             task_confusion_matrix = np.zeros((5, 5))
             user_confusion_matrix = np.zeros((2, 2))
+            pos_preds = []
+            neg_preds = []
             for u in users:
                 test_data, test_classes, task_classes, train_time_one_user = user_model.train([m], u, tasks,
                                                                                               haptics_or_ur3e=1,
                                                                                               interval=i, verbose=False)
                 train_time_total += train_time_one_user
 
-                user_accuracy, task_accuracy, avr_pred_time, ucm, tcm, u_auc, t_f1, u_f1 = user_model.test(
+                user_accuracy, task_accuracy, avr_pred_time, ucm, tcm, u_auc, p_f1, n_f1, p_preds, n_preds = user_model.test(
                     u, m,
                     test_data,
                     test_classes,
@@ -54,8 +71,10 @@ def bulk_test():
                 user_confusion_matrix += ucm
                 task_confusion_matrix += tcm
                 user_auc_total += u_auc
-                user_f1_total += u_f1
-                task_f1_total += t_f1
+                pos_f1_total.extend(p_f1)
+                neg_f1_total.extend(n_f1)
+                pos_preds.extend(p_preds)
+                neg_preds.extend(n_preds)
 
             results[m][i]["User Confusion Matrix"] = user_confusion_matrix
             results[m][i]["Task Confusion Matrix"] = task_confusion_matrix
@@ -69,33 +88,35 @@ def bulk_test():
             results[m][i]["Task Confusion Matrix Score"] = np.sum(np.trace(task_confusion_matrix)) / np.sum(
                 task_confusion_matrix)
             results[m][i]["User AUC Score"] = user_auc_total / len(users)
-            results[m][i]["User F1 Score"] = user_f1_total / len(users)
-            results[m][i]["Task F1 Score"] = task_f1_total / len(users)
+            results[m][i]["Positive F1 Score"] = f1_score([0 for _ in pos_f1_total], pos_f1_total)
+            results[m][i]["Negative F1 Score"] = f1_score([0 for _ in neg_f1_total], neg_f1_total)
+            results[m][i]["Positive AUC Score"] = roc_auc_score([1 for _ in pos_preds], pos_preds)
+            results[m][i]["Negative AUC Score"] = roc_auc_score([1 for _ in neg_preds], neg_preds)
 
     plot_line(intervals, [[results[m][i]["Task Model Train Time"] for i in intervals] for m in methods], methods_caps,
-              "Time Interval", "Train Time (s)", "Effect of Time Interval on Task Model Train Time")
+              "Time Interval", "Train Time (s)", "Time Interval on Task Model Train Time")
     plot_line(intervals, [[results[m][i]["User Models Average Train Time"] for i in intervals] for m in methods],
               methods_caps,
-              "Time Interval", "Train Time (s)", "Effect of Time Interval on User Model Train Time")
+              "Time Interval", "Train Time (s)", "Time Interval on User Model Train Time")
     plot_line(intervals, [
         [(results[m][i]["User Confusion Matrix"][0, 0] / np.sum(results[m][i]["User Confusion Matrix"][:, 0]) * 100) for
          i in intervals] for m in methods], methods_caps,
-              "Time Interval", "Accuracy (%)", "Effect of Time Interval on User Prediction Accuracy")
+              "Time Interval", "Accuracy (%)", "Time Interval on User Prediction Accuracy")
     plot_line(intervals, [
         [(results[m][i]["User Confusion Matrix"][1, 1] / np.sum(results[m][i]["User Confusion Matrix"][:, 1]) * 100) for
          i in
          intervals] for m in methods], methods_caps,
-              "Time Interval", "Accuracy (%)", "Effect of Time Interval on Attacker Prediction Accuracy")
+              "Time Interval", "Accuracy (%)", "Time Interval on Attacker Prediction Accuracy")
 
     plot_line(intervals, [[results[m][i]["Task Prediction Accuracy"] * 100 for i in intervals] for m in methods],
               methods_caps,
-              "Time Interval", "Accuracy (%)", "Effect of Time Interval on Task Prediction Accuracy")
+              "Time Interval", "Accuracy (%)", "Time Interval on Task Prediction Accuracy")
 
-    plot_line(intervals, [[results[m][i]["Average Prediction Time"] for i in intervals] for m in methods], methods_caps,
-              "Time Interval", "Average Prediction Time (s)", "Effect of Time Interval on Prediction Time")
+    plot_line(intervals, [[results[m][i]["Average Prediction Time"] / 1000 for i in intervals] for m in methods],
+              methods_caps,
+              "Time Interval", "Prediction Time (ms)", "Time Interval on Prediction Time")
 
-
-    with open("results.txt", "w") as f:
+    with open(f_name + "_results.txt", "w") as f:
         for i in intervals:
             f.write(f"i={i}\n")
             f.write("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
@@ -107,9 +128,6 @@ def bulk_test():
                 f.write("\n")
 
             f.write("=======================================================\n")
-
-
-
 
 
 def plot_line(x, ys, labels, x_label, y_label, title):
@@ -172,5 +190,5 @@ def auc(m):
 
 
 bulk_test()
-#auc("rf")
+# auc("rf")
 # find_best_interval()
