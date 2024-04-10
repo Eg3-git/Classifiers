@@ -16,8 +16,8 @@ tasks = ["abc", "cir", "star", "www", "xyz"]
 
 
 def bulk_test():
-    print("General Metris")
-    #metric_test()
+    print("General Metrics")
+    metric_test()
 
     print("RF Task")
     metric_test(use_task_model="rf", f_name="rf_task")
@@ -63,7 +63,7 @@ def metric_test(use_task_model=None, f_name="general"):
                     test_data,
                     test_classes,
                     task_classes,
-                    haptics_or_ur3e=1, verbose=False, metrics=True, true_task=False, use_task_model="dt")
+                    haptics_or_ur3e=1, verbose=False, metrics=True, true_task=False, use_task_model=use_task_model)
 
                 user_acc_total += user_accuracy
                 task_acc_total += task_accuracy
