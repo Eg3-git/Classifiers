@@ -7,7 +7,7 @@ import task_model
 import user_model
 
 users = ["u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8"]
-intervals = [5, 10, 25, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 650, 700, 750, 800, 850, 900, 950]
+intervals = [10, 25, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 650, 700, 750, 800, 850, 900, 950]
 # intervals = [100, 200, 300, 400, 500]
 # methods = ["knn"]
 methods = ["svm", "rf", "knn", "dt"]
@@ -17,7 +17,7 @@ tasks = ["abc", "cir", "star", "www", "xyz"]
 
 def bulk_test():
     print("General Metris")
-    metric_test()
+    #metric_test()
 
     print("RF Task")
     metric_test(use_task_model="rf", f_name="rf_task")
@@ -88,10 +88,10 @@ def metric_test(use_task_model=None, f_name="general"):
             results[m][i]["Task Confusion Matrix Score"] = np.sum(np.trace(task_confusion_matrix)) / np.sum(
                 task_confusion_matrix)
             results[m][i]["User AUC Score"] = user_auc_total / len(users)
-            results[m][i]["Positive F1 Score"] = f1_score([0 for _ in pos_f1_total], pos_f1_total)
-            results[m][i]["Negative F1 Score"] = f1_score([0 for _ in neg_f1_total], neg_f1_total)
-            results[m][i]["Positive AUC Score"] = roc_auc_score([1 for _ in pos_preds], pos_preds)
-            results[m][i]["Negative AUC Score"] = roc_auc_score([1 for _ in neg_preds], neg_preds)
+            results[m][i]["F1 Score"] = f1_score([0 for _ in pos_f1_total] + [1 for _ in neg_f1_total], pos_f1_total + neg_f1_total)
+            #results[m][i]["Negative F1 Score"] = f1_score([0 for _ in neg_f1_total], neg_f1_total)
+            results[m][i]["AUC Score"] = roc_auc_score([0 for _ in pos_preds] + [1 for _ in neg_preds], pos_preds + neg_preds)
+            #results[m][i]["Negative AUC Score"] = roc_auc_score([1 for _ in neg_preds], neg_preds)
 
     plot_line(intervals, [[results[m][i]["Task Model Train Time"] for i in intervals] for m in methods], methods_caps,
               "Time Interval", "Train Time (s)", "Time Interval on Task Model Train Time")

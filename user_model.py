@@ -3,6 +3,7 @@ from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score, log_loss, confusion_matrix, roc_auc_score, f1_score
+from tqdm import tqdm
 
 from feature_extraction import extract
 from joblib import dump, load
@@ -100,10 +101,10 @@ def test(user, method, test_data, test_classes, task_classes, haptics_or_ur3e=0,
             t2 = time.time()
 
             if test_classes[task][i] == 0:
-                pos_preds.append(user_model.predict_proba(test_data[task][i])[0][0])
+                pos_preds.append(user_model.predict_proba([test_data[task][i]])[:, 0])
                 pos_f1.append(current_prediction)
             else:
-                neg_preds.append(user_model.predict_proba(test_data[task][i])[0][1])
+                neg_preds.append(user_model.predict_proba([test_data[task][i]])[:, 0])
                 neg_f1.append(current_prediction)
 
             tot_time += (t2 - t1)
