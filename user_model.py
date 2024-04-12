@@ -63,7 +63,7 @@ def train(methods, train_user, tasks_to_train, haptics_or_ur3e=0, interval=100, 
 
 
 def test(user, method, test_data, test_classes, task_classes, haptics_or_ur3e=0, verbose=True, metrics=True,
-         true_task=False, use_task_model=None):
+         true_task=False, use_task_model=None, task_recollection=True):
     tasks = ["abc", "cir", "star", "www", "xyz"]
     name = "ur3e" if haptics_or_ur3e else "haptics"
 
@@ -92,8 +92,12 @@ def test(user, method, test_data, test_classes, task_classes, haptics_or_ur3e=0,
             if true_task:
                 predicted_task = task_classes[task][i]
             else:
-                task_counts[task_model.predict([test_data[task][i]])[0]] += 1
-                predicted_task = task_counts.argmax()
+                init_prediction = task_model.predict([test_data[task][i]])[0]
+                if task_recollection:
+                    task_counts[init_prediction] += 1
+                    predicted_task = task_counts.argmax()
+                else:
+                    predicted_task = init_prediction
 
             user_model = load(
                 "models/{m}/{t}/{m}_{u}_{t}_{h}.joblib".format(m=method, t=tasks[predicted_task], u=user, h=name))
