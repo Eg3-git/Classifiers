@@ -6,8 +6,8 @@ from sklearn.metrics import roc_auc_score, f1_score
 import task_model
 import user_model
 
-users = ["u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8"]
-intervals = [10, 25, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 650, 700, 750, 800, 850, 900, 950]
+users = ["u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8", "u9", "u10", "u11"]
+intervals = [10, 25, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 650, 700, 750, 800, 850, 900, 950, 1000]
 # intervals = [100, 200, 300, 400, 500]
 # methods = ["knn"]
 methods = ["svm", "rf", "knn", "dt"]
@@ -17,29 +17,32 @@ tasks = ["abc", "cir", "star", "www", "xyz"]
 
 def bulk_test():
     print("General Metrics")
-    metric_test()
+    #metric_test()
 
     print("RF Task")
-    metric_test(use_task_model="rf", f_name="rf_task")
+    #metric_test(use_task_model="rf", f_name="rf_task")
 
     print("DT Task")
-    metric_test(use_task_model="dt", f_name="dt_task")
+    #metric_test(use_task_model="dt", f_name="dt_task")
+
+    print("True Task")
+    metric_test(use_task_model="anything", f_name="true_task", true_task=True)
 
 
-def metric_test(use_task_model=None, f_name="general"):
+def metric_test(use_task_model=None, f_name="general", true_task=False):
     results = {m: {i: {} for i in intervals} for m in methods}
 
     for i in tqdm(intervals):
-        if use_task_model is not None:
-            task_model.train(use_task_model, haptics_or_ur3e=1,
+        if use_task_model is not None and not true_task:
+            task_train_time = task_model.train(use_task_model, haptics_or_ur3e=1,
                              interval=i, verbose=False)
+        else:
+            task_train_time = 0
 
         for m in methods:
-            if use_task_model is None:
-                task_model.train(m, haptics_or_ur3e=1,
+            if use_task_model is None and not true_task:
+                task_train_time = task_model.train(m, haptics_or_ur3e=1,
                                  interval=i, verbose=False)
-
-            task_train_time = results[m][i]["Task Model Train Time"] = 0
 
             train_time_total = 0
             user_acc_total = 0
@@ -63,7 +66,7 @@ def metric_test(use_task_model=None, f_name="general"):
                     test_data,
                     test_classes,
                     task_classes,
-                    haptics_or_ur3e=1, verbose=False, metrics=True, true_task=False, use_task_model=use_task_model)
+                    haptics_or_ur3e=1, verbose=False, metrics=True, true_task=true_task, use_task_model=use_task_model)
 
                 user_acc_total += user_accuracy
                 task_acc_total += task_accuracy

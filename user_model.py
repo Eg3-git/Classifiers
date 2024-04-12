@@ -14,7 +14,7 @@ intervals = [100]
 
 
 def train(methods, train_user, tasks_to_train, haptics_or_ur3e=0, interval=100, verbose=True, paras=[]):
-    all_users = ["u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8"]
+    all_users = ["u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8", "u9", "u10", "u11"]
 
     test_data = {t: [] for t in tasks_to_train}
     test_classes = {t: [] for t in tasks_to_train}
@@ -66,10 +66,12 @@ def test(user, method, test_data, test_classes, task_classes, haptics_or_ur3e=0,
          true_task=False, use_task_model=None):
     tasks = ["abc", "cir", "star", "www", "xyz"]
     name = "ur3e" if haptics_or_ur3e else "haptics"
-    if use_task_model is None:
-        task_model = load("{m}_task_model_{h}.joblib".format(m=method, h=name))
-    else:
-        task_model = load("{m}_task_model_{h}.joblib".format(m=use_task_model, h=name))
+
+    if not true_task:
+        if use_task_model is None:
+            task_model = load("{m}_task_model_{h}.joblib".format(m=method, h=name))
+        else:
+            task_model = load("{m}_task_model_{h}.joblib".format(m=use_task_model, h=name))
 
     user_predictions = []
     task_predictions = []
