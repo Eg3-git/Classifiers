@@ -1,3 +1,5 @@
+import csv
+
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
@@ -62,7 +64,7 @@ def train(methods, train_user, tasks_to_train, haptics_or_ur3e=0, interval=100, 
     return test_data, test_classes, task_classes, avr_time
 
 
-def test(user, method, test_data, test_classes, task_classes, haptics_or_ur3e=0, verbose=True, metrics=True,
+def test(user, method, test_data, test_classes, task_classes, interval=100, haptics_or_ur3e=1, verbose=True, metrics=True,
          true_task=False, use_task_model=None, task_recollection=True):
     tasks = ["abc", "cir", "star", "www", "xyz"]
     name = "ur3e" if haptics_or_ur3e else "haptics"
@@ -145,26 +147,3 @@ def test(user, method, test_data, test_classes, task_classes, haptics_or_ur3e=0,
         return user_accuracy, task_accuracy, avr_pred_time
 
 
-def calc_auc(method, haptics_or_ur3e=1, interval=100, verbose=True, metrics=True):
-    all_users = ["u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8"]
-    tasks = ["abc", "cir", "star", "www", "xyz"]
-    auc_score_total = 0
-
-    for user in all_users:
-        for task in tasks:
-            name = "ur3e" if haptics_or_ur3e else "haptics"
-            test_data = []
-            test_classes = []
-
-            for u in all_users:
-                _, test = extract(u, task, haptics_or_ur3e, interval=interval)
-                test_data.extend(test)
-                test_classes.extend([0 for _ in test] if u == user else [1 for _ in test])
-
-            user_model = load(
-                "models/{m}/{t}/{m}_{u}_{t}_{h}.joblib".format(m=method, t=task, u=user, h=name))
-
-            user_probs = user_model.predict_proba(test_data)
-            auc_score_total += roc_auc_score(test_classes, user_probs[:, 0])
-
-    return auc_score_total / (len(all_users) * len(tasks))

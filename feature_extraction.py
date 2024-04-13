@@ -10,7 +10,7 @@ import math
 def extract(user, task, haptics_or_ur3e=0, show_maxmin=False, interval=100):
     maxs = [None for _ in range(17)]
     mins = [None for _ in range(17)]
-    base_dir = "Data Collection/{u}/{u}{t}".format(u=user, t=task)
+    base_dir = "Data Collection/{u}/".format(u=user, t=task)
     features = []
 
     if haptics_or_ur3e:
@@ -18,8 +18,11 @@ def extract(user, task, haptics_or_ur3e=0, show_maxmin=False, interval=100):
     else:
         dir_end = "_haptics_end_effector_pose.csv"
 
-    for instance in range(1, 6):
-        f_dir = "{a}{i}{b}".format(a=base_dir, i=instance, b=dir_end)
+    start_seq = f"{user}{task}"
+    csv_files = [item for item in os.listdir(base_dir) if item.startswith(start_seq) and item.endswith(dir_end)]
+
+    for instance in csv_files:
+        f_dir = base_dir + instance
 
         with open(f_dir, newline='') as f:
             data = list(csv.reader(f))

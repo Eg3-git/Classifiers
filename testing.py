@@ -7,10 +7,10 @@ import task_model
 import user_model
 
 users = ["u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8", "u9", "u10", "u11"]
-intervals = [10, 25, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 650, 700, 750, 800, 850, 900, 950, 1000]
+intervals = [25, 50, 75, 100, 150, 200, 250, 300, 350, 400, 450, 500, 650, 700, 750, 800, 850, 900, 950, 1000]
 # intervals = [100, 200, 300, 400, 500]
 # methods = ["knn"]
-methods = ["svm", "rf", "knn", "dt"]
+methods = ["svm", "knn"]
 methods_caps = [s.upper() for s in methods]
 tasks = ["abc", "cir", "star", "www", "xyz"]
 
@@ -19,16 +19,17 @@ def bulk_test():
     print("General Metrics")
     #metric_test()
 
-    print("")
+    print("Without Task Recollection")
+    #metric_test(f_name="no_task_rec", task_recollection=False)
 
     print("RF Task")
     #metric_test(use_task_model="rf", f_name="rf_task")
 
     print("DT Task")
-    metric_test(use_task_model="dt", f_name="dt_task")
+    #metric_test(use_task_model="dt", f_name="dt_task")
 
     print("True Task")
-    #metric_test(use_task_model="anything", f_name="true_task", true_task=True)
+    metric_test(use_task_model="anything", f_name="true_task", true_task=True)
 
 
 def metric_test(use_task_model=None, f_name="general", true_task=False, task_recollection=True):
@@ -67,7 +68,7 @@ def metric_test(use_task_model=None, f_name="general", true_task=False, task_rec
                     u, m,
                     test_data,
                     test_classes,
-                    task_classes,
+                    task_classes, interval=i,
                     haptics_or_ur3e=1, verbose=False, metrics=True, true_task=true_task, use_task_model=use_task_model, task_recollection=task_recollection)
 
                 user_acc_total += user_accuracy

@@ -134,4 +134,4 @@ def load_user_weights(task):
 # d = task_train()
 # task_test(d)
 intervals = [25, 50, 75, 100, 150, 200, 250, 300, 350, 400, 450, 500, 650, 700, 750, 800, 850, 900, 950, 1000]
-weight_train_task(intervals)
+weight_train_user(intervals)
