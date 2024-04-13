@@ -19,17 +19,19 @@ def bulk_test():
     print("General Metrics")
     #metric_test()
 
+    print("")
+
     print("RF Task")
     #metric_test(use_task_model="rf", f_name="rf_task")
 
     print("DT Task")
-    #metric_test(use_task_model="dt", f_name="dt_task")
+    metric_test(use_task_model="dt", f_name="dt_task")
 
     print("True Task")
-    metric_test(use_task_model="anything", f_name="true_task", true_task=True)
+    #metric_test(use_task_model="anything", f_name="true_task", true_task=True)
 
 
-def metric_test(use_task_model=None, f_name="general", true_task=False):
+def metric_test(use_task_model=None, f_name="general", true_task=False, task_recollection=True):
     results = {m: {i: {} for i in intervals} for m in methods}
 
     for i in tqdm(intervals):
@@ -66,7 +68,7 @@ def metric_test(use_task_model=None, f_name="general", true_task=False):
                     test_data,
                     test_classes,
                     task_classes,
-                    haptics_or_ur3e=1, verbose=False, metrics=True, true_task=true_task, use_task_model=use_task_model)
+                    haptics_or_ur3e=1, verbose=False, metrics=True, true_task=true_task, use_task_model=use_task_model, task_recollection=task_recollection)
 
                 user_acc_total += user_accuracy
                 task_acc_total += task_accuracy
