@@ -64,7 +64,7 @@ def train(methods, train_user, tasks_to_train, haptics_or_ur3e=0, interval=100, 
     return test_data, test_classes, task_classes, avr_time
 
 
-def test(user, method, test_data, test_classes, task_classes, interval=100, haptics_or_ur3e=1, verbose=True, metrics=True,
+def test(user, method, test_data, test_classes, task_classes, haptics_or_ur3e=1, verbose=True, metrics=True,
          true_task=False, use_task_model=None, task_recollection=True):
     tasks = ["abc", "cir", "star", "www", "xyz"]
     name = "ur3e" if haptics_or_ur3e else "haptics"

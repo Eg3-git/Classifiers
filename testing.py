@@ -10,7 +10,7 @@ users = ["u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8", "u9", "u10", "u11"]
 intervals = [25, 50, 75, 100, 150, 200, 250, 300, 350, 400, 450, 500, 650, 700, 750, 800, 850, 900, 950, 1000]
 # intervals = [100, 200, 300, 400, 500]
 # methods = ["knn"]
-methods = ["svm", "knn"]
+methods = ["svm", "rf", "knn", "dt"]
 methods_caps = [s.upper() for s in methods]
 tasks = ["abc", "cir", "star", "www", "xyz"]
 
@@ -23,10 +23,10 @@ def bulk_test():
     #metric_test(f_name="no_task_rec", task_recollection=False)
 
     print("RF Task")
-    #metric_test(use_task_model="rf", f_name="rf_task")
+    metric_test(use_task_model="rf", f_name="rf_task")
 
     print("DT Task")
-    #metric_test(use_task_model="dt", f_name="dt_task")
+    metric_test(use_task_model="dt", f_name="dt_task")
 
     print("True Task")
     metric_test(use_task_model="anything", f_name="true_task", true_task=True)
@@ -38,14 +38,14 @@ def metric_test(use_task_model=None, f_name="general", true_task=False, task_rec
     for i in tqdm(intervals):
         if use_task_model is not None and not true_task:
             task_train_time = task_model.train(use_task_model, haptics_or_ur3e=1,
-                             interval=i, verbose=False)
+                                               interval=i, verbose=False)
         else:
             task_train_time = 0
 
         for m in methods:
             if use_task_model is None and not true_task:
                 task_train_time = task_model.train(m, haptics_or_ur3e=1,
-                                 interval=i, verbose=False)
+                                                   interval=i, verbose=False)
 
             train_time_total = 0
             user_acc_total = 0
@@ -68,8 +68,9 @@ def metric_test(use_task_model=None, f_name="general", true_task=False, task_rec
                     u, m,
                     test_data,
                     test_classes,
-                    task_classes, interval=i,
-                    haptics_or_ur3e=1, verbose=False, metrics=True, true_task=true_task, use_task_model=use_task_model, task_recollection=task_recollection)
+                    task_classes,
+                    haptics_or_ur3e=1, verbose=False, metrics=True, true_task=true_task, use_task_model=use_task_model,
+                    task_recollection=task_recollection)
 
                 user_acc_total += user_accuracy
                 task_acc_total += task_accuracy
@@ -94,9 +95,11 @@ def metric_test(use_task_model=None, f_name="general", true_task=False, task_rec
             results[m][i]["Task Confusion Matrix Score"] = np.sum(np.trace(task_confusion_matrix)) / np.sum(
                 task_confusion_matrix)
             results[m][i]["User AUC Score"] = user_auc_total / len(users)
-            results[m][i]["F1 Score"] = f1_score([0 for _ in pos_f1_total] + [1 for _ in neg_f1_total], pos_f1_total + neg_f1_total)
+            results[m][i]["F1 Score"] = f1_score([0 for _ in pos_f1_total] + [1 for _ in neg_f1_total],
+                                                 pos_f1_total + neg_f1_total)
             #results[m][i]["Negative F1 Score"] = f1_score([0 for _ in neg_f1_total], neg_f1_total)
-            results[m][i]["AUC Score"] = roc_auc_score([0 for _ in pos_preds] + [1 for _ in neg_preds], pos_preds + neg_preds)
+            results[m][i]["AUC Score"] = roc_auc_score([0 for _ in pos_preds] + [1 for _ in neg_preds],
+                                                       pos_preds + neg_preds)
             #results[m][i]["Negative AUC Score"] = roc_auc_score([1 for _ in neg_preds], neg_preds)
 
     plot_line(intervals, [[results[m][i]["Task Model Train Time"] for i in intervals] for m in methods], methods_caps,
