@@ -12,7 +12,7 @@ from joblib import dump, load
 import time
 import numpy as np
 
-intervals = [100]
+
 
 
 def train(methods, train_user, tasks_to_train, haptics_or_ur3e=0, interval=100, verbose=True, paras=[]):

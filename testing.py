@@ -2,6 +2,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from tqdm import tqdm
 from sklearn.metrics import roc_auc_score, f1_score
+from feature_extraction import extract, feature_calc
 
 import task_model
 import user_model
@@ -16,20 +17,22 @@ tasks = ["abc", "cir", "star", "www", "xyz"]
 
 
 def bulk_test():
+    print(brute_force(best_interval=100, methods_to_test=methods, use_task_model="dt"))
+
     print("General Metrics")
-    #metric_test()
+    # metric_test()
 
     print("Without Task Recollection")
-    #metric_test(f_name="no_task_rec", task_recollection=False)
+    # metric_test(f_name="no_task_rec", task_recollection=False)
 
     print("RF Task")
-    metric_test(use_task_model="rf", f_name="rf_task")
+    # metric_test(use_task_model="rf", f_name="rf_task")
 
     print("DT Task")
-    metric_test(use_task_model="dt", f_name="dt_task")
+    # metric_test(use_task_model="dt", f_name="dt_task")
 
     print("True Task")
-    metric_test(use_task_model="anything", f_name="true_task", true_task=True)
+    # metric_test(use_task_model="anything", f_name="true_task", true_task=True)
 
 
 def metric_test(use_task_model=None, f_name="general", true_task=False, task_recollection=True):
@@ -97,10 +100,10 @@ def metric_test(use_task_model=None, f_name="general", true_task=False, task_rec
             results[m][i]["User AUC Score"] = user_auc_total / len(users)
             results[m][i]["F1 Score"] = f1_score([0 for _ in pos_f1_total] + [1 for _ in neg_f1_total],
                                                  pos_f1_total + neg_f1_total)
-            #results[m][i]["Negative F1 Score"] = f1_score([0 for _ in neg_f1_total], neg_f1_total)
+            # results[m][i]["Negative F1 Score"] = f1_score([0 for _ in neg_f1_total], neg_f1_total)
             results[m][i]["AUC Score"] = roc_auc_score([0 for _ in pos_preds] + [1 for _ in neg_preds],
                                                        pos_preds + neg_preds)
-            #results[m][i]["Negative AUC Score"] = roc_auc_score([1 for _ in neg_preds], neg_preds)
+            # results[m][i]["Negative AUC Score"] = roc_auc_score([1 for _ in neg_preds], neg_preds)
 
     plot_line(intervals, [[results[m][i]["Task Model Train Time"] for i in intervals] for m in methods], methods_caps,
               "Time Interval", "Train Time (s)", "Time Interval on Task Model Train Time")
@@ -187,15 +190,68 @@ def find_best_interval():
                 f"{m} The highest task accuracy was found at: {max(range(len(all_task_accuracies[m])), key=all_task_accuracies[m].__getitem__)}")
 
 
-def auc(m):
-    scores = []
-    for i in tqdm(intervals):
+def brute_force(best_interval, methods_to_test, use_task_model=None, f_name="bf_general", true_task=False,
+                task_recollection=True):
+    results = {m: 0 for m in methods_to_test}
+    highs, lows = calc_bounds(best_interval)
+
+    if use_task_model is not None and not true_task:
+        task_model.train(use_task_model, haptics_or_ur3e=1,
+                         interval=best_interval, verbose=False)
+
+    for m in tqdm(methods_to_test):
+        total_nofe = 0
+
+        if use_task_model is None and not true_task:
+            task_model.train(m, haptics_or_ur3e=1,
+                             interval=best_interval, verbose=False)
+
         for u in users:
-            test_data, test_classes, task_classes, train_time_one_user = user_model.train([m], u, tasks,
-                                                                                          haptics_or_ur3e=1,
-                                                                                          interval=i, verbose=False)
-        scores.append(user_model.calc_auc(m, haptics_or_ur3e=1, interval=i))
-    print(scores)
+            user_model.train([m], u, tasks,
+                             haptics_or_ur3e=1,
+                             interval=best_interval,
+                             verbose=False)
+
+            sample_data, data_fake_classes, = gen_fake_data(highs, lows, best_interval)
+
+            new_extracted_accuracy, _, _ = user_model.test(u, m, sample_data, data_fake_classes,
+                                                           data_fake_classes,
+                                                           haptics_or_ur3e=1, verbose=False, metrics=False,
+                                                           true_task=true_task,
+                                                           use_task_model=use_task_model,
+                                                           task_recollection=task_recollection)
+
+
+            total_nofe += new_extracted_accuracy
+
+        results[m] = total_nofe / len(users)
+    return results
+
+
+def calc_bounds(i):
+    s1 = []
+    for u in users:
+        for t in tasks:
+            s1.extend([row[:4] for row in extract(u, t, haptics_or_ur3e=1, interval=i, extract_features=False,
+                                                  split_train_test=False)])
+
+
+    highs = np.amax(np.array(s1), axis=0)
+    lows = np.amin(np.array(s1), axis=0)
+
+    return highs, lows
+
+
+def gen_fake_data(highs, lows, i):
+    sample_data = {}
+    data_fake_classes = {}
+
+    for t in tasks:
+        rand_data = np.random.uniform(low=lows, high=highs, size=(1000, 4))
+
+        sample_data[t] = feature_calc(i, rand_data)
+        data_fake_classes[t] = [0 for _ in sample_data[t]]
+    return sample_data, data_fake_classes
 
 
 bulk_test()
